@@ -1,0 +1,6 @@
+listing_images/
+*.pyc
+.DS_Store
+__pycache__/
+.env
+credentials.json
