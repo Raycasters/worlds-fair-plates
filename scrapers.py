@@ -60,12 +60,12 @@ def search_ebay(query, search_type='findItemsAdvanced'):
     total_pages = int(response['paginationOutput']['totalPages'])
     out = response
 
-    print(f'total pages: {total_pages}')
+    print('total pages: ', total_pages)
 
     page = 2
 
     while page <= total_pages:
-        print(f'Getting page {page}')
+        print('Getting page',  page)
         response = get_ebay_page(query, page, search_type=search_type)
         out['searchResult']['item'] += response['searchResult']['item']
         page += 1
@@ -198,13 +198,12 @@ if __name__ == '__main__':
 
     keywords = ["1964 world's fair plate new york"]
 
-    # for keyword in keywords:
-    #     results = search_ebay(keyword, 'findItemsAdvanced')['searchResult']['item']
-    #     results += search_ebay("World's fair plate", 'findCompletedItems')['searchResult']['item']
-    #     parse_and_save_ebay(results)
-    #
-    #     results = search_etsy(keyword)
-    #     parse_and_save_etsy(results)
+    for keyword in keywords:
+        results = search_ebay(keyword, 'findItemsAdvanced')['searchResult']['item']
+        results += search_ebay(keyword, 'findCompletedItems')['searchResult']['item']
+        parse_and_save_ebay(results)
+        results = search_etsy(keyword)
+        parse_and_save_etsy(results)
 
     download_images()
 
