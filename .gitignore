@@ -4,4 +4,4 @@ listing_images/
 __pycache__/
 .env
 credentials.json
-lightsail.pem
+*.pem
