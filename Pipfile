@@ -1,17 +1,13 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 ebaysdk = "*"
 requests = "*"
 django = "*"
 "psycopg2-binary" = "*"
-
+gunicorn = "*"
 
 [dev-packages]
-
