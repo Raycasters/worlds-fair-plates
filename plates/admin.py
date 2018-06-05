@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from .models import Plate, Listing, PlateImage, ListingImage
 
 class ListingAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price', 'location', 'show_listing_url', 'plate', 'confirmed')
+    list_display = ('title', 'price', 'location', 'show_listing_url', 'plate', 'confidence', 'confirmed')
 
     def show_listing_url(self, obj):
         return format_html('<a href="{url}">{desc}</a>', url=obj.listing_url, desc=obj.original_id)
