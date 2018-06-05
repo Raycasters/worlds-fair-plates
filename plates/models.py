@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.utils.safestring import mark_safe
 
 class Plate(models.Model):
     title = models.CharField(max_length=255)
@@ -12,6 +13,9 @@ class Plate(models.Model):
 
     def listings(self):
          return Listing.objects.filter(plate=self)
+
+    def __str__(self):
+        return self.title
 
 
 class PlateImage(models.Model):
@@ -44,6 +48,14 @@ class Listing(models.Model):
 
     def images(self):
          return ListingImage.objects.filter(listing=self)
+
+    def image_tag(self):
+        return mark_safe('<img src="/static/%s" width="150"/>' % (self.image_url()))
+
+    image_tag.short_description = 'Image'
+
+    def __str__(self):
+        return self.title
 
 
 class ListingImage(models.Model):
