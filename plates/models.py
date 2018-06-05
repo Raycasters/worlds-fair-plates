@@ -3,8 +3,15 @@ from django.contrib.postgres.fields import JSONField
 
 class Plate(models.Model):
     title = models.CharField(max_length=255)
+    label = models.CharField(max_length=255, blank=True, null=True)
     image = models.CharField(max_length=255, default='default.jpg')
     description = models.TextField()
+
+    def images(self):
+         return PlateImage.objects.filter(plate=self)
+
+    def listings(self):
+         return Listing.objects.filter(plate=self)
 
 
 class PlateImage(models.Model):
@@ -26,6 +33,7 @@ class Listing(models.Model):
     original_id = models.CharField(max_length=255, unique=True, default=0)
     original_listing = JSONField()
     confirmed = models.BooleanField(default=False)
+    confidence = models.FloatField(default=0.0)
 
     plate = models.ForeignKey(Plate, on_delete=models.CASCADE, blank=True, null=True)
 
@@ -33,6 +41,9 @@ class Listing(models.Model):
         if self.image is None:
             return ''
         return self.image.replace('listing_images/', '')
+
+    def images(self):
+         return ListingImage.objects.filter(listing=self)
 
 
 class ListingImage(models.Model):
