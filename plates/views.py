@@ -59,6 +59,9 @@ def listings(request):
     if query.get('limit'):
         all_listings = all_listings[0:int(query.get('limit'))]
 
+    if query.get('notplates'):
+        all_listings = all_listings.filter(not_a_plate=True)
+
     all_listings = all_listings.values('id', 'title', 'plate_id', 'listing_source', 'listing_url', 'price', 'date_listed', 'image')
 
     return JsonResponse(list(all_listings), safe=False)
