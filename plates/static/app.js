@@ -152,7 +152,6 @@ const NotPlates = {
 
   methods: {
     loadListings() {
-      this.loading = true;
       fetch("/listings?notplates=true")
         .then(response => {
           return response.json();
