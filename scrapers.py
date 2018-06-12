@@ -259,7 +259,8 @@ def label_images():
 
     with tf.Session(graph=graph) as sess:
         for l in listings:
-            file_name = l.image
+            file_name = 'listing_images/' + l.image
+            print(file_name)
             if not os.path.exists(file_name):
                 continue
 
@@ -277,7 +278,6 @@ def label_images():
             label=labels[top_k[0]]
             confidence = results[top_k[0]]
 
-            print(file_name)
             print("{} (score={:0.5f})".format(label, confidence))
             print('--')
 
@@ -342,11 +342,9 @@ def thumb(img, outname=None, w=200, h=200):
 def make_thumbnails():
     listings = Listing.objects.exclude(image='default.jpg')
     for l in listings:
-        print(l.image)
         try:
-            thumb(l.image)
+            thumb('listing_images/' + l.image)
         except Exception as e:
-            print(e)
             continue
 
 
@@ -361,10 +359,16 @@ if __name__ == '__main__':
         results = search_etsy(keyword)
         parse_and_save_etsy(results)
 
+    print('downloading images')
     download_images()
 
+    print('labeling')
     label_images()
+
+    print('making thumbs')
     make_thumbnails()
+
+    print('geocoding results')
     geocode_listings()
 
     # results = search_ebay(keywords[0], 'findItemsAdvanced')

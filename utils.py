@@ -17,7 +17,7 @@ def import_plates():
 
     for label, title in lines:
         img = 'plates/' + label.replace(' ', '_') + '.png'
-        plate = Plate(label=label, title=title)
+        plate = Plate(label=label, title=title, image=img)
         plate.save()
 
 
@@ -42,6 +42,6 @@ def export_bad_images():
             copyfile(img, dst)
 
 
-export_bad_images()
-# import_plates()
-# update_images()
+#export_bad_images()
+#import_plates()
+#update_images()
