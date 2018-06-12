@@ -352,7 +352,7 @@ def make_thumbnails():
 
 if __name__ == '__main__':
 
-    keywords = ["1964 world's fair plate new york"]
+    keywords = ["1964 world's fair plate new york", "1964 fair plate -license"]
 
     for keyword in keywords:
         results = search_ebay(keyword, 'findItemsAdvanced')['searchResult']['item']
