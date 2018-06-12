@@ -11,6 +11,8 @@ from ebaysdk.finding import Connection as Finding
 from ebaysdk.shopping import Connection as Shopping
 from ebaysdk.exception import ConnectionError
 from pprint import pprint
+import geocoder
+from PIL import Image
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "worldsfair.settings")
 import django
@@ -253,7 +255,7 @@ def label_images():
     labels = load_labels(label_file)
     graph = load_graph(model_file)
 
-    listings = Listing.objects.exclude(image='default.jpg').exclude(image=None).exclude(confirmed=True).filter(plate=None)
+    listings = Listing.objects.exclude(image='default.jpg').exclude(image=None).exclude(confirmed=True).exclude(not_a_plate=True).filter(plate=None)
 
     with tf.Session(graph=graph) as sess:
         for l in listings:
@@ -279,15 +281,73 @@ def label_images():
             print("{} (score={:0.5f})".format(label, confidence))
             print('--')
 
-            plate = Plate.objects.get(label=label)
-            print(plate.title)
-            l.plate = plate
-            l.confidence = confidence
-            l.save()
+            if label == 'not plates':
+                l.not_a_plate = True
+                l.confidence = confidence
+            else:
+                plate = Plate.objects.get(label=label)
+                print(plate.title)
+                l.plate = plate
+                l.confirmed = True
+                l.confidence = confidence
+                l.save()
             # print(top_k)
             # for i in top_k:
             #     print(template.format(labels[i], results[i]))
 
+
+def geocode_listings():
+    listings = Listing.objects.filter(lat=None).exclude(location='unknown').exclude(plate=None)
+    for l in listings:
+        try:
+            print(l.location)
+            g = geocoder.osm(l.location)
+            lat, lng = g.latlng
+            l.lat = lat
+            l.lng = lng
+            l.save()
+        except Exception as e:
+            print(e)
+
+
+def thumb(img, outname=None, w=200, h=200):
+    if outname is None:
+        outname = img + '.thumb.jpg'
+
+    if os.path.exists(outname):
+        return outname
+
+    image = Image.open(img)
+    width, height = image.size
+
+    # Crop as little as possible to square, keeping the center.
+    if width > height:
+        delta = width - height
+        left = int(delta / 2)
+        upper = 0
+        right = height + left
+        lower = height
+    else:
+        delta = height - width
+        left = 0
+        upper = int(delta / 2)
+        right = width
+        lower = width + upper
+    image = image.crop((left, upper, right, lower))
+    image.thumbnail((w, h))
+    image.save(img + '.thumb.jpg')
+    return outname
+
+
+def make_thumbnails():
+    listings = Listing.objects.exclude(image='default.jpg')
+    for l in listings:
+        print(l.image)
+        try:
+            thumb(l.image)
+        except Exception as e:
+            print(e)
+            continue
 
 
 if __name__ == '__main__':
@@ -304,6 +364,8 @@ if __name__ == '__main__':
     download_images()
 
     label_images()
+    make_thumbnails()
+    geocode_listings()
 
     # results = search_ebay(keywords[0], 'findItemsAdvanced')
     # with open('ebay3.json', 'w') as outfile:

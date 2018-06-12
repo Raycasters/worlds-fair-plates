@@ -5,3 +5,6 @@ __pycache__/
 .env
 credentials.json
 *.pem
+.vscode
+plates-frontend/
+plates-frontend2/
