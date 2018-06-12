@@ -137,6 +137,37 @@ const PlatePage = {
   }
 };
 
+const NotPlates = {
+  template: "#not-plates",
+  delimiters: ["${", "}"],
+  data: function() {
+    return {
+      listings: []
+    }
+  },
+
+  created: function(){
+    this.loadListings();
+  },
+
+  methods: {
+    loadListings() {
+      this.loading = true;
+      fetch("/listings?notplates=true")
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          this.listings = json;
+        })
+        .catch(ex => {
+          console.log("parsing failed", ex);
+        });
+    },
+    thumbnail: thumbnail,
+  }
+};
+
 const Plate = {
   template: "#plate",
   delimiters: ["${", "}"]
@@ -155,6 +186,7 @@ const Welcome = {
 const routes = [
   { path: "/", component: Welcome },
   { path: "/plates", name: "plates", component: Home },
+  { path: "/notplates", name: "not-plates", component: NotPlates },
   { path: "/plate/:id", name: "plate-page", component: PlatePage },
   { path: "/listing/:id", name: "listing", component: Listing }
 ];

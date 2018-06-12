@@ -69,6 +69,14 @@
     </div>
   </script>
 
+  <script type="text/template" id="not-plates">
+    <div>
+      <div v-for="listing in listings">
+        <img :src="thumbnail(listing.image)">
+      </div>
+    </div>
+  </script>
+
   <script type="text/template" id="listing">
     <div>
       ${ $route.params.id}
