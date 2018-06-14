@@ -14,7 +14,7 @@ function map(n, start1, stop1, start2, stop2, withinBounds) {
   }
 }
 
-function image_url(listing) {
+function imageUrl(listing) {
   return 'static/' + listing.image.replace('listing_images/', '');
 }
 
@@ -60,7 +60,7 @@ const Home = {
         });
     },
 
-    image_url: image_url,
+    imageUrl: imageUrl,
     thumbnail: thumbnail,
 
     listStyle: function(listing) {
@@ -132,7 +132,7 @@ const PlatePage = {
           console.log('parsing failed', ex);
         });
     },
-    image_url: image_url,
+    imageUrl: imageUrl,
     thumbnail: thumbnail
   }
 };
