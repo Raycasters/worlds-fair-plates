@@ -31,8 +31,6 @@
       </div>
 
       <div class="plate-container">
-        <!-- <input type="checkbox" id="checkbox" v-model="showMap">
-        <label for="checkbox">Map {{showMap}}</label> -->
         <div v-for="plate in plates" class="plate">
           <router-link :to="{ name: 'plate-page', params: { id: plate.id }}">
             <img class="plate-image" :src="'/static/' + plate.image">
@@ -49,7 +47,8 @@
   <script type="text/template" id="plate-page">
     <div class="plate-detail">
       <div class="plate-detail-header">
-        <img class="plate-detail-image" :src="'/static/' + image">
+        <!--<img class="plate-detail-image" :src="'/static/' + image">-->
+        <div class="sketchfab-embed-wrapper"><iframe width="480" height="480" src="https://sketchfab.com/models/fb289795a10f4e489e1292fdfb242120/embed?autospin=0.2&amp;autostart=1&amp;preload=1" frameborder="0" allow="autoplay; fullscreen; vr" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/models/fb289795a10f4e489e1292fdfb242120?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">WF plate with a pink rim</a> by <a href="https://sketchfab.com/zivschneider?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">raycaster</a> on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a> </p> </div>
         <p>${title}</p>
       </div>
 
@@ -87,6 +86,7 @@
   <script src="/static/vue.js"></script>
   <script src="/static/vue-router.js"></script>
   <script src="/static/v-tooltip.min.js"></script>
+  {# <script src="https://unpkg.com/vue-threejs@0.1.1/lib/index.js"></script> #}
   <script src="/static/app.js"></script>
 </body>
 </html>

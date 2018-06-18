@@ -242,6 +242,45 @@ def load_labels(label_file):
     return label
 
 
+def test_label(filenames):
+    model_file = "retrained_graph.pb"
+    label_file = "retrained_labels.txt"
+    input_height = 224
+    input_width = 224
+    input_mean = 128
+    input_std = 128
+    input_layer = "input"
+    output_layer = "final_result"
+
+    labels = load_labels(label_file)
+    graph = load_graph(model_file)
+
+    with tf.Session(graph=graph) as sess:
+        for file_name in filenames:
+            print(file_name)
+
+            t = read_tensor_from_image_file(file_name, input_height=input_height, input_width=input_width, input_mean=input_mean, input_std=input_std)
+
+            input_name = "import/" + input_layer
+            output_name = "import/" + output_layer
+            input_operation = graph.get_operation_by_name(input_name);
+            output_operation = graph.get_operation_by_name(output_name);
+
+            results = sess.run(output_operation.outputs[0], {input_operation.outputs[0]: t})
+
+            results = np.squeeze(results)
+            top_k = results.argsort()[-5:][::-1]
+            label=labels[top_k[0]]
+            confidence = results[top_k[0]]
+
+            print("{} (score={:0.5f})".format(label, confidence))
+            for i in top_k:
+                print("{} (score={:0.5f})".format(labels[i], results[i]))
+
+            print('--')
+
+
+
 def label_images():
     model_file = "retrained_graph.pb"
     label_file = "retrained_labels.txt"
@@ -350,26 +389,28 @@ def make_thumbnails():
 
 if __name__ == '__main__':
 
-    keywords = ["1964 world's fair plate new york", "1964 fair plate -license"]
+    test_label(sys.argv[1:])
 
-    for keyword in keywords:
-        results = search_ebay(keyword, 'findItemsAdvanced')['searchResult']['item']
-        results += search_ebay(keyword, 'findCompletedItems')['searchResult']['item']
-        parse_and_save_ebay(results)
-        results = search_etsy(keyword)
-        parse_and_save_etsy(results)
-
-    print('downloading images')
-    download_images()
-
-    print('labeling')
-    label_images()
-
-    print('making thumbs')
-    make_thumbnails()
-
-    print('geocoding results')
-    geocode_listings()
+    # keywords = ["1964 world's fair plate new york", "1964 fair plate -license"]
+    #
+    # for keyword in keywords:
+    #     results = search_ebay(keyword, 'findItemsAdvanced')['searchResult']['item']
+    #     results += search_ebay(keyword, 'findCompletedItems')['searchResult']['item']
+    #     parse_and_save_ebay(results)
+    #     results = search_etsy(keyword)
+    #     parse_and_save_etsy(results)
+    #
+    # print('downloading images')
+    # download_images()
+    #
+    # print('labeling')
+    # label_images()
+    #
+    # print('making thumbs')
+    # make_thumbnails()
+    #
+    # print('geocoding results')
+    # geocode_listings()
 
     # results = search_ebay(keywords[0], 'findItemsAdvanced')
     # with open('ebay3.json', 'w') as outfile:

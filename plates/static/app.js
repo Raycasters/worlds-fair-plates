@@ -1,4 +1,5 @@
 Vue.use(VTooltip);
+// Vue.use(VueThreejs);
 
 let data = null;
 
