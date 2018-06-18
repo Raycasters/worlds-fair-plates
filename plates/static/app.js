@@ -1,4 +1,5 @@
 Vue.use(VTooltip);
+// Vue.use(VueThreejs);
 
 let data = null;
 
@@ -14,17 +15,17 @@ function map(n, start1, stop1, start2, stop2, withinBounds) {
   }
 }
 
-function image_url(listing) {
-  return "static/" + listing.image.replace("listing_images/", "");
+function imageUrl(listing) {
+  return 'static/' + listing.image.replace('listing_images/', '');
 }
 
 function thumbnail(listing) {
-  return "static/" + listing.image.replace("listing_images/", "") + ".thumb.jpg";
+  return 'static/' + listing.image.replace('listing_images/', '') + '.thumb.jpg';
 }
 
 const Home = {
-  template: "#home",
-  delimiters: ["${", "}"],
+  template: '#home',
+  delimiters: ['${', '}'],
   data: function() {
     return {
       plates: [],
@@ -46,7 +47,7 @@ const Home = {
       }
 
       this.loading = true;
-      fetch("/plates?listings=true&listing_limit=500")
+      fetch('/plates?listings=true&listing_limit=500')
         .then(response => {
           return response.json();
         })
@@ -56,11 +57,11 @@ const Home = {
           this.loading = false;
         })
         .catch(ex => {
-          console.log("parsing failed", ex);
+          console.log('parsing failed', ex);
         });
     },
 
-    image_url: image_url,
+    imageUrl: imageUrl,
     thumbnail: thumbnail,
 
     listStyle: function(listing) {
@@ -92,8 +93,8 @@ const Home = {
 };
 
 const PlatePage = {
-  template: "#plate-page",
-  delimiters: ["${", "}"],
+  template: '#plate-page',
+  delimiters: ['${', '}'],
 
   data: function() {
     return {
@@ -101,7 +102,7 @@ const PlatePage = {
       id: null,
       title: '',
       description: '',
-      image: null,
+      image: null
     };
   },
 
@@ -116,7 +117,7 @@ const PlatePage = {
     loadPlate: function() {
       this.loading = true;
 
-      fetch("/plates/" + this.$route.params.id)
+      fetch('/plates/' + this.$route.params.id)
         .then(response => {
           return response.json();
         })
@@ -129,30 +130,30 @@ const PlatePage = {
           this.loading = false;
         })
         .catch(ex => {
-          console.log("parsing failed", ex);
+          console.log('parsing failed', ex);
         });
     },
-    image_url: image_url,
-    thumbnail: thumbnail,
+    imageUrl: imageUrl,
+    thumbnail: thumbnail
   }
 };
 
 const NotPlates = {
-  template: "#not-plates",
-  delimiters: ["${", "}"],
+  template: '#not-plates',
+  delimiters: ['${', '}'],
   data: function() {
     return {
       listings: []
-    }
+    };
   },
 
-  created: function(){
+  created: function() {
     this.loadListings();
   },
 
   methods: {
     loadListings() {
-      fetch("/listings?notplates=true")
+      fetch('/listings?notplates=true')
         .then(response => {
           return response.json();
         })
@@ -160,34 +161,34 @@ const NotPlates = {
           this.listings = json;
         })
         .catch(ex => {
-          console.log("parsing failed", ex);
+          console.log('parsing failed', ex);
         });
     },
-    thumbnail: thumbnail,
+    thumbnail: thumbnail
   }
 };
 
 const Plate = {
-  template: "#plate",
-  delimiters: ["${", "}"]
+  template: '#plate',
+  delimiters: ['${', '}']
 };
 
 const Listing = {
-  template: "#listing",
-  delimiters: ["${", "}"]
+  template: '#listing',
+  delimiters: ['${', '}']
 };
 
 const Welcome = {
-  template: "#welcome",
-  delimiters: ["${", "}"]
+  template: '#welcome',
+  delimiters: ['${', '}']
 };
 
 const routes = [
-  { path: "/", component: Welcome },
-  { path: "/plates", name: "plates", component: Home },
-  { path: "/notplates", name: "not-plates", component: NotPlates },
-  { path: "/plate/:id", name: "plate-page", component: PlatePage },
-  { path: "/listing/:id", name: "listing", component: Listing }
+  {path: '/', component: Welcome},
+  {path: '/plates', name: 'plates', component: Home},
+  {path: '/notplates', name: 'not-plates', component: NotPlates},
+  {path: '/plate/:id', name: 'plate-page', component: PlatePage},
+  {path: '/listing/:id', name: 'listing', component: Listing}
 ];
 
 const router = new VueRouter({
@@ -196,7 +197,7 @@ const router = new VueRouter({
 
 new Vue({
   router,
-  el: "#app",
-  delimiters: ["${", "}"],
+  el: '#app',
+  delimiters: ['${', '}'],
   data: {}
 });

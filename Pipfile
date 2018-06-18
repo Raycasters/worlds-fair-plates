@@ -14,5 +14,6 @@ geocoder = "*"
 pillow = "*"
 docopt = "*"
 django-cors-headers = "*"
+pylint = "*"
 
 [dev-packages]
