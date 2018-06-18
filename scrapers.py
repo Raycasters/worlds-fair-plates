@@ -284,6 +284,7 @@ def label_images():
             if label == 'not plates':
                 l.not_a_plate = True
                 l.confidence = confidence
+                l.save()
             else:
                 plate = Plate.objects.get(label=label)
                 print(plate.title)
