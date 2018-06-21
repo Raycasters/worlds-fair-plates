@@ -389,28 +389,28 @@ def make_thumbnails():
 
 if __name__ == '__main__':
 
-    test_label(sys.argv[1:])
+    # test_label(sys.argv[1:])
 
-    # keywords = ["1964 world's fair plate new york", "1964 fair plate -license"]
-    #
-    # for keyword in keywords:
-    #     results = search_ebay(keyword, 'findItemsAdvanced')['searchResult']['item']
-    #     results += search_ebay(keyword, 'findCompletedItems')['searchResult']['item']
-    #     parse_and_save_ebay(results)
-    #     results = search_etsy(keyword)
-    #     parse_and_save_etsy(results)
-    #
-    # print('downloading images')
-    # download_images()
-    #
-    # print('labeling')
-    # label_images()
-    #
-    # print('making thumbs')
-    # make_thumbnails()
-    #
-    # print('geocoding results')
-    # geocode_listings()
+    keywords = ["1964 world's fair plate new york", "1964 fair plate -license"]
+
+    for keyword in keywords:
+        results = search_ebay(keyword, 'findItemsAdvanced')['searchResult']['item']
+        results += search_ebay(keyword, 'findCompletedItems')['searchResult']['item']
+        parse_and_save_ebay(results)
+        results = search_etsy(keyword)
+        parse_and_save_etsy(results)
+
+    print('downloading images')
+    download_images()
+
+    print('labeling')
+    label_images()
+
+    print('making thumbs')
+    make_thumbnails()
+
+    print('geocoding results')
+    geocode_listings()
 
     # results = search_ebay(keywords[0], 'findItemsAdvanced')
     # with open('ebay3.json', 'w') as outfile:
