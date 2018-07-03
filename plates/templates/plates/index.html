@@ -73,6 +73,14 @@
     </div>
   </script>
 
+  <script type="text/template" id="map-page">
+    <div class="map-container">
+      <router-link v-for="listing in listings" class="map-item" :to="{ name: 'plate-page', params: { id: listing.plate_id }}">
+          <img v-tooltip="listing.title + ', ' + listing.location" class="map-listing-image" :src="thumbnail(listing)" :style="mapStyle(listing)">
+      </router-link>
+    </div>
+  </script>
+
   <script type="text/template" id="plate-page">
     <div class="plate-detail">
       <div class="plate-detail-header">

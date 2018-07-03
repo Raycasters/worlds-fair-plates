@@ -3,8 +3,7 @@ Vue.use(VTooltip);
 let data = null;
 let scroller;
 
-document.addEventListener('DOMContentLoaded', () => {
-}, false);
+document.addEventListener('DOMContentLoaded', () => {}, false);
 
 function map(n, start1, stop1, start2, stop2, withinBounds) {
   var newval = (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
@@ -43,7 +42,13 @@ const Home = {
   },
 
   updated: function() {
-    scroller = new SweetScroll({vertical: false, horizontal: true}, '.plate-container');
+    scroller = new SweetScroll(
+      {
+        vertical: false,
+        horizontal: true
+      },
+      '.plate-container'
+    );
   },
 
   methods: {
@@ -62,7 +67,13 @@ const Home = {
           this.plates = json;
           data = json;
           this.loading = false;
-          scroller = new SweetScroll({vertical: true, horizontal: true}, '.plate-container');
+          scroller = new SweetScroll(
+            {
+              vertical: true,
+              horizontal: true
+            },
+            '.plate-container'
+          );
         })
         .catch(ex => {
           console.log('parsing failed', ex);
@@ -117,6 +128,77 @@ const Home = {
       e.preventDefault();
       scroller.to('+=' + window.innerWidth);
     }
+  }
+};
+
+const MapPage = {
+  template: '#map-page',
+  delimiters: ['${', '}'],
+  data: function() {
+    return {
+      plates: [],
+      plate: null,
+      listings: [],
+      loading: false,
+    };
+  },
+
+  created: function() {
+    this.loadPlates();
+  },
+
+  methods: {
+    loadPlates: function() {
+      if (data) {
+        if (this.plates.length == 0) this.plates = data;
+        this.setListings();
+        return true;
+      }
+
+      this.loading = true;
+      fetch('/plates?listings=true&listing_limit=600')
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          this.plates = json;
+          data = json;
+          this.setListings();
+          this.loading = false;
+        })
+        .catch(ex => {
+          console.log('parsing failed', ex);
+        });
+    },
+
+    setListings: function() {
+      let listings = this.plates.map(p => p.listings);
+      listings = [].concat.apply([], listings);
+      console.log(listings);
+      this.listings = listings;
+    },
+
+    imageUrl: imageUrl,
+    thumbnail: thumbnail,
+
+    mapStyle: function(listing) {
+      // let x = map(listing.lng, -180, 180, 0, 100);
+      // let y = map(listing.lat, -90, 90, 0, 100);
+      let x = map(listing.lng, -125, 50, 0, 20000);
+      let y = map(listing.lat, 21, 50, 4000, 0);
+      // let x = (listing.lng * 1000)/360;
+      // let y = (listing.lat * 1000)/180;
+      let style = {
+        // position: 'absolute',
+        // left: `${x}%`,
+        // top: `${y}%`,
+        transform: `translate(${x}%, ${y}%)`
+        // width: '20px',
+        // display: listing.lat ? 'block' : 'none',
+        // border: '1px solid #000',
+      };
+      return style;
+    },
   }
 };
 
@@ -217,12 +299,40 @@ const Info = {
 };
 
 const routes = [
-  {path: '/', component: Welcome},
-  {path: '/plates', name: 'plates', component: Home},
-  {path: '/info', name: 'info', component: Info},
-  {path: '/notplates', name: 'not-plates', component: NotPlates},
-  {path: '/plate/:id', name: 'plate-page', component: PlatePage},
-  {path: '/listing/:id', name: 'listing', component: Listing}
+  {
+    path: '/',
+    component: Welcome
+  },
+  {
+    path: '/plates',
+    name: 'plates',
+    component: Home
+  },
+  {
+    path: '/map',
+    name: 'map-page',
+    component: MapPage
+  },
+  {
+    path: '/info',
+    name: 'info',
+    component: Info
+  },
+  {
+    path: '/notplates',
+    name: 'not-plates',
+    component: NotPlates
+  },
+  {
+    path: '/plate/:id',
+    name: 'plate-page',
+    component: PlatePage
+  },
+  {
+    path: '/listing/:id',
+    name: 'listing',
+    component: Listing
+  }
 ];
 
 const router = new VueRouter({
