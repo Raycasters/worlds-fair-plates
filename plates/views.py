@@ -26,7 +26,9 @@ def plate_list(request):
             listings = listings.values('id', 'title', 'image', 'location', 'lat', 'lng')
             p['listings'] = list(listings)
 
-    return JsonResponse(list(all_plates), safe=False)
+    all_plates = sorted(list(all_plates), key=lambda k: len(k.get('listings', [])), reverse=True)
+
+    return JsonResponse(all_plates, safe=False)
 
 
 def plate_details(request, pk):

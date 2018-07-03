@@ -7,33 +7,63 @@
   <title>Plates of the World</title>
   <meta name="description" content="">
   <meta name="author" content="Raycaster Studio and Sam Lavigne">
-
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css?v=1.0">
 </head>
 
 <body>
   <div id="app">
-    <router-link to="/plates" id="logo">Plates of the World</router-link>
+    <nav>
+      <div class="nav-item">
+        <router-link to="/info">info</router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/plates" id="logo">Plates of the World</router-link>
+      </div>
+
+      <div class="nav-item">
+        <div class="nav-icons" v-show="$route.path!='/'">
+          <router-link class="icon" to="/plates"><img src="/static/list.png"></router-link>
+          <router-link class="icon" to="/map"><img src="/static/map.png"></router-link>
+        </div>
+      </div>
+    </nav>
     <router-view></router-view>
   </div>
 
   <script type="text/template" id="welcome">
-    <div>
-      <p>Intro copy here</p>
-      <p><router-link to="/plates" >Explore the collection</router-link></p>
+    <div class="welcome">
+        <model-gltf
+          :width="400"
+          :height="400"
+          :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: 1.8 } ]"
+          src="/static/plates/05_blue_potter_39_2.gltf"
+        ></model-gltf>
+      <p>This site is dedicated to the collectible plates produced to commemorate the 1939 and 1964 NY World's Fairs.</p>
+      <p>Where are these plates today?</p>
+      
+      <p>
+        <router-link class="explore" to="/plates">Explore the collection</router-link>
+      </p>
     </div>
   </script>
 
   <script type="text/template" id="home">
     <div>
-      <div v-if="loading">
-        loading
+      <div class="plate-pagination">
+        <a href="#" @click="goLeft"><img src="/static/left.png"></a>
+        <a href="#" @click="goRight"><img src="/static/right.png"></a>
       </div>
+
+      <div class="loading" v-if="loading">
+        <p>loading...</p>
+      </div>
+
 
       <div class="plate-container">
         <div v-for="plate in plates" class="plate">
           <router-link :to="{ name: 'plate-page', params: { id: plate.id }}">
-            <img class="plate-image" :src="'/static/' + plate.image">
+            <video loop @mouseover="startHover" @mouseout="endHover" class="plate-video" :src="'/static/plates/' + '05_blue_potter_39.mp4'"></video>
             <div class="listing" v-for="listing in plate.listings">
               <img v-tooltip="listing.title + ', ' + listing.location" class="listing-image" :src="thumbnail(listing)" :style="listStyle(listing)">
             </div>
@@ -47,16 +77,21 @@
   <script type="text/template" id="plate-page">
     <div class="plate-detail">
       <div class="plate-detail-header">
-        <!--<img class="plate-detail-image" :src="'/static/' + image">-->
-        <div class="sketchfab-embed-wrapper"><iframe width="480" height="480" src="https://sketchfab.com/models/fb289795a10f4e489e1292fdfb242120/embed?autospin=0.2&amp;autostart=1&amp;preload=1" frameborder="0" allow="autoplay; fullscreen; vr" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/models/fb289795a10f4e489e1292fdfb242120?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">WF plate with a pink rim</a> by <a href="https://sketchfab.com/zivschneider?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">raycaster</a> on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a> </p> </div>
+        <model-gltf
+          :width="400"
+          :height="400"
+          :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: 1.8 } ]"
+          src="/static/plates/05_blue_potter_39_2.gltf"
+        ></model-gltf>
         <p>${title}</p>
       </div>
 
       <div class="plate-detail-listings">
         <div class="plate-detail-listing" v-for="listing in listings">
-          <img class="plate-detail-listing-image" :src="thumbnail(listing)">
-          <p>${ listing.location }</p>
-          <p><a :href="listing.listing_url" target="_blank">Original Listing</a></p>
+          <a :href="listing.listing_url" target="_blank">
+            <img class="plate-detail-listing-image" :src="thumbnail(listing)">
+            <p>${ listing.location }</p>
+          </a>
         </div>
       </div>
     </div>
@@ -82,11 +117,22 @@
     </div>
   </script>
 
+  <script type="text/template" id="info">
+    <div class="info-screen">
+      <h2>Info about the project here</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+      <h2>Credits</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+    </div>
+  </script>
+
   <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
   <script src="/static/vue.js"></script>
+  <script src="https://unpkg.com/sweet-scroll/sweet-scroll.min.js"></script>
   <script src="/static/vue-router.js"></script>
   <script src="/static/v-tooltip.min.js"></script>
-  {# <script src="https://unpkg.com/vue-threejs@0.1.1/lib/index.js"></script> #}
+  <script src="/static/vue-3d-model.min.js"></script>
   <script src="/static/app.js"></script>
 </body>
 </html>

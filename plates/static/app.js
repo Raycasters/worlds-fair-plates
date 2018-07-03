@@ -1,7 +1,10 @@
 Vue.use(VTooltip);
-// Vue.use(VueThreejs);
 
 let data = null;
+let scroller;
+
+document.addEventListener('DOMContentLoaded', () => {
+}, false);
 
 function map(n, start1, stop1, start2, stop2, withinBounds) {
   var newval = (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
@@ -39,6 +42,10 @@ const Home = {
     this.loadPlates();
   },
 
+  updated: function() {
+    scroller = new SweetScroll({vertical: false, horizontal: true}, '.plate-container');
+  },
+
   methods: {
     loadPlates: function() {
       if (data) {
@@ -55,6 +62,7 @@ const Home = {
           this.plates = json;
           data = json;
           this.loading = false;
+          scroller = new SweetScroll({vertical: true, horizontal: true}, '.plate-container');
         })
         .catch(ex => {
           console.log('parsing failed', ex);
@@ -88,6 +96,26 @@ const Home = {
       } else {
         return {};
       }
+    },
+
+    startHover: function(e) {
+      e.target.play();
+      // e.target.loop();
+    },
+
+    endHover: function(e) {
+      e.target.pause();
+      e.target.currentTime = 0;
+    },
+
+    goLeft: function(e) {
+      e.preventDefault();
+      scroller.to('-=' + window.innerWidth);
+    },
+
+    goRight: function(e) {
+      e.preventDefault();
+      scroller.to('+=' + window.innerWidth);
     }
   }
 };
@@ -183,9 +211,15 @@ const Welcome = {
   delimiters: ['${', '}']
 };
 
+const Info = {
+  template: '#info',
+  delimiters: ['${', '}']
+};
+
 const routes = [
   {path: '/', component: Welcome},
   {path: '/plates', name: 'plates', component: Home},
+  {path: '/info', name: 'info', component: Info},
   {path: '/notplates', name: 'not-plates', component: NotPlates},
   {path: '/plate/:id', name: 'plate-page', component: PlatePage},
   {path: '/listing/:id', name: 'listing', component: Listing}

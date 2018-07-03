@@ -8,10 +8,10 @@ html {
 
 body {
   margin: 0;
-  padding: 20px;
-  font: 14px Futura, sans-serif;
+  padding: 0px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
   background-color: #fff;
-  /* background-color: #ccc; */
   color: #000;
 }
 
@@ -20,11 +20,96 @@ a {
   text-decoration: none;
 }
 
+nav {
+  background-color: #EDFD38;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+}
+
+.icon-nav {
+  display: flex;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+.nav-item:first-child > a {
+    margin-right: auto;
+}
+
+.nav-icons {
+  margin-left: auto;
+}
+
+nav .icon img{
+  height: 35px;
+  padding: 5px;
+  /* display: inline-block; */
+}
+
+nav .icon.selected img, nav .icon:hover img, nav .icon.router-link-active img {
+  outline: 1px solid #000;
+}
+
+
 #logo {
   text-transform: uppercase;
-  margin: 20px 0px;
-  font-size: 20px;
+  font-weight: bold;
+  /* margin: 20px 0px; */
+  font-size: 29px;
   display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.welcome, .info-screen {
+  text-align: center;
+  line-height: 160%;
+  max-width: 600px;
+  margin: auto;
+  padding: 10px;
+}
+
+.explore {
+  background-image: url('/static/ribbon.png');
+  background-repeat: no-repeat;
+  display: block;
+  width: 274px;
+  height: 51px;
+  line-height: 51px;
+  margin: auto;
+}
+
+.explore:hover {
+  text-decoration: underline;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plate-pagination {
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.plate-pagination a {
+  margin: 0px 20px;
+}
+
+.plate-pagination img {
+  display: block;
+  height: 100%;
 }
 
 .plate-container {
@@ -34,17 +119,17 @@ a {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  margin-top: 10%;
+  margin-top: 70px;
 }
 
 .plate {
   flex: 0 0 auto;
   width: 12.5%;
   text-align: center;
-  padding: 15px;
+  padding: 3px;
 }
 
-.plate-image {
+.plate-image, .plate-video {
   width: 100%;
   margin-bottom: 15px;
   border-radius: 100%;
