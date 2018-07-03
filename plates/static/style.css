@@ -139,7 +139,7 @@ nav .icon.selected img, nav .icon:hover img, nav .icon.router-link-active img {
 }
 
 .listing {
-  max-width: 50%;
+  max-width: 45%;
   /* padding: 5px; */
   border-radius: 100%;
   /* background-color: #000; */
