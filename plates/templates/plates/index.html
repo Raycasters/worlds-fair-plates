@@ -36,6 +36,9 @@
         <model-gltf
           :width="400"
           :height="400"
+          @on-load="onLoad"
+          @on-mousedown="toggleControl"
+          :rotation="rotation"
           :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: 1.8 } ]"
           src="/static/plates/05_blue_potter_39_2.gltf"
         ></model-gltf>

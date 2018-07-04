@@ -290,7 +290,31 @@ const Listing = {
 
 const Welcome = {
   template: '#welcome',
-  delimiters: ['${', '}']
+  delimiters: ['${', '}'],
+  data: function() {
+    return {
+      rotation: {x: 0, y: 0, z: 0},
+      speed: 0.001,
+      userControl: false,
+    }
+  },
+  methods: {
+    onLoad: function() {
+      this.rotate();
+    },
+    toggleControl: function() {
+      this.userControl = true;
+    },
+    rotate: function () {
+      if (this.userControl) return false;
+
+      this.rotation.y += this.speed;
+      if (this.rotation.y > .5 || this.rotation.y < -.5){
+        this.speed *= -1;
+      }
+      requestAnimationFrame( this.rotate );
+    }
+  }
 };
 
 const Info = {
