@@ -140,7 +140,7 @@ const MapPage = {
       plate: null,
       listings: [],
       loading: false,
-      accessToken: "pk.eyJ1Ijoic3BsYXZpZ25lIiwiYSI6ImNpejFzZGx2NDAxbW0zM21uaGE5czI2cWkifQ.6p_ecnp-5wUHJeRm0kxKxQ",
+      accessToken: "pk.eyJ1IjoienNjaG5laWRlciIsImEiOiJjaXg3eWUzeGowMXEyMnlxeWI1MzBudzN0In0.i-aef9w2ifwlPvXerrQOwA",
       mapStyle: "MAP_STYLE", // your map style
     };
   },
@@ -214,7 +214,7 @@ const MapPage = {
       mapboxgl.accessToken = this.accessToken;
       this.mapbox = new mapboxgl.Map({
         container: 'map-container',
-        style: 'mapbox://styles/mapbox/light-v9',
+        style: 'mapbox://styles/zschneider/cj9ndjfuz3dhi2rthgplijv36',
         center: [-96, 37.8],
         zoom: 3
       });
@@ -235,7 +235,11 @@ const PlatePage = {
       id: null,
       title: '',
       description: '',
-      image: null
+      image: null,
+      rotation: {x: 0, y: 0, z: 0},
+      speed: 0.001,
+      userControl: false,
+      admin: window.admin,
     };
   },
 
@@ -266,6 +270,25 @@ const PlatePage = {
           console.log('parsing failed', ex);
         });
     },
+
+    onLoad: function() {
+      this.rotate();
+    },
+
+    toggleControl: function() {
+      this.userControl = true;
+    },
+
+    rotate: function () {
+      if (this.userControl) return false;
+
+      this.rotation.y += this.speed;
+      if (this.rotation.y > .5 || this.rotation.y < -.5){
+        this.speed *= -1;
+      }
+      requestAnimationFrame( this.rotate );
+    },
+
     imageUrl: imageUrl,
     thumbnail: thumbnail
   }

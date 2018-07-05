@@ -20,6 +20,11 @@ a {
   text-decoration: none;
 }
 
+a.admin-link {
+  color: red;
+  text-decoration: underline;
+}
+
 nav {
   background-color: #edfd38;
   display: flex;
@@ -172,18 +177,39 @@ nav .icon.router-link-active img {
   /* display: block; */
 }
 
+.plate-detail-header {
+  margin: 60px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.plate-detail-header h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+.plate-detail-header p {
+  font-size: 12px;
+  white-space: pre;
+}
+
 .plate-detail-image {
   max-height: 200px;
 }
 
 .plate-detail-listings {
+  max-width: 1000px;
   display: flex;
   flex-wrap: wrap;
+  margin: auto;
 }
 
 .plate-detail-listing {
   width: 12.5%;
   padding: 10px;
+  font-size: 11px;
 }
 
 .plate-detail-listing p {
@@ -192,6 +218,10 @@ nav .icon.router-link-active img {
 
 .plate-detail-listing img {
   width: 100%;
+}
+
+.plate-detail-listing p img {
+  width: 8px;
 }
 
 .marker {

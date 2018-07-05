@@ -13,6 +13,10 @@
 </head>
 
 <body>
+  {% if user.is_authenticated %}
+    <script>window.admin=true;</script>
+  {% endif %}
+
   <div id="app">
     <nav>
       <div class="nav-item">
@@ -66,7 +70,7 @@
       <div class="plate-container">
         <div v-for="plate in plates" class="plate">
           <router-link :to="{ name: 'plate-page', params: { id: plate.id }}">
-            <video loop @mouseover="startHover" @mouseout="endHover" class="plate-video" :src="'/static/plates/' + '05_blue_potter_39.mp4'"></video>
+            <video loop @mouseover="startHover" @mouseout="endHover" class="plate-video" :src="'/static/plates/' + '13_WF_bowl_64.webm'"></video>
             <div class="listing" v-for="listing in plate.listings">
               <img v-tooltip="listing.title + ', ' + listing.location" class="listing-image" :src="thumbnail(listing)" :style="listStyle(listing)">
             </div>
@@ -84,20 +88,42 @@
   <script type="text/template" id="plate-page">
     <div class="plate-detail">
       <div class="plate-detail-header">
-        <model-gltf
-          :width="400"
-          :height="400"
-          :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: 1.8 } ]"
-          src="/static/plates/05_blue_potter_39_2.gltf"
-        ></model-gltf>
-        <p>${title}</p>
+        <div>
+          <model-gltf
+            :width="300"
+            :height="300"
+            @on-load="onLoad"
+            @on-mousedown="toggleControl"
+            :rotation="rotation"
+            :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: 1.8 } ]"
+            src="/static/plates/05_blue_potter_39_2.gltf"
+          ></model-gltf>
+        </div>
+        <div style="margin-left: 20px;">
+          <h3>What the machine sees</h3>
+          <p>${description}</p>
+          <p v-if="admin"><a class="admin-link" :href="'/admin/plates/plate/' +id + '/change/'">Edit</a></p>
+        </div>
       </div>
 
       <div class="plate-detail-listings">
         <div class="plate-detail-listing" v-for="listing in listings">
-          <a :href="listing.listing_url" target="_blank">
+          <div v-if="admin">
             <img class="plate-detail-listing-image" :src="thumbnail(listing)">
-            <p>${ listing.location }</p>
+            <p>
+              <a :href="listing.listing_url">
+                ${ listing.location.replace(/,/g, ', ') }
+                <img src="/static/external.svg">
+              </a>
+              <a :href="'/admin/plates/listing/' +listing.id + '/change/'" class="admin-link">edit</a>
+            </p>
+          </div>
+          <a v-else :href="listing.listing_url" target="_blank">
+            <img class="plate-detail-listing-image" :src="thumbnail(listing)">
+            <p>
+              ${ listing.location.replace(/,/g, ', ') }
+              <img src="/static/external.svg">
+            </p>
           </a>
         </div>
       </div>
