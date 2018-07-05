@@ -82,7 +82,14 @@
   </script>
 
   <script type="text/template" id="map-page">
-    <div id="map-container" style=""></div>
+    <div>
+      <div id="map-plate-holder">
+        <div class="map-plate" @click="showPlate(plate.id)" href="#" v-for="plate in plates">
+          <img :src="'/static/' + plate.image">
+        </div>
+      </div>
+      <div id="map-container" style=""></div>
+    </div>
   </script>
 
   <script type="text/template" id="plate-page">

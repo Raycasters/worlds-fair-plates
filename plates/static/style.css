@@ -228,12 +228,46 @@ nav .icon.router-link-active img {
   width: 30px;
   height: 30px;
   border-radius: 30px;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  opacity: 0.0;
+}
+
+.marker.selected {
+  opacity: 1;
 }
 
 #map-container {
   position: absolute;
   top: 90px;
   bottom: 0;
+  width: 100%;
+  z-index: 0;
+}
+
+#map-plate-holder {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  top: 90px;
+  bottom: 0;
+  width: 100px;
+  overflow-y: scroll;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+#map-plate-holder .map-plate {
+  display: block;
+  margin: auto;
+  padding: 5px 20px;
+  cursor: pointer;
+}
+
+#map-plate-holder .map-plate img {
+  display: block;
   width: 100%;
 }
 

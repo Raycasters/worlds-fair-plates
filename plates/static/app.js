@@ -180,17 +180,30 @@ const MapPage = {
         });
     },
 
+    showPlate: function(plateID) {
+      console.log(plateID);
+      let allListings = document.querySelectorAll('.marker');
+      let listings = document.querySelectorAll('.marker-' + plateID);
+      for (let i = 0; i < allListings.length; i++) {
+        allListings[i].classList.remove('selected');
+      }
+      for (let i = 0; i < listings.length; i++) {
+        listings[i].classList.add('selected');
+      }
+    },
+
     setListings: function() {
       let listings = this.plates.map(p => p.listings);
       listings = [].concat.apply([], listings);
-      console.log(listings);
       this.listings = listings;
 
       let addToMap = () => {
         if (this.mapbox) {
           listings.forEach((l) => {
             var el = document.createElement('img');
-            el.className = 'marker';
+            el.classList.add('marker');
+            el.classList.add('selected');
+            el.classList.add('marker-' + l.plate_id);
             el.src = this.thumbnail(l);
             // el.addEventListener('click', (e) => {
             //   console.log(e);
