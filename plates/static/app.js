@@ -140,6 +140,8 @@ const MapPage = {
       plate: null,
       listings: [],
       loading: false,
+      accessToken: "pk.eyJ1Ijoic3BsYXZpZ25lIiwiYSI6ImNpejFzZGx2NDAxbW0zM21uaGE5czI2cWkifQ.6p_ecnp-5wUHJeRm0kxKxQ",
+      mapStyle: "MAP_STYLE", // your map style
     };
   },
 
@@ -147,8 +149,14 @@ const MapPage = {
     this.loadPlates();
   },
 
+  mounted: function() {
+    this.makeMap();
+    console.log('made map');
+  },
+
   methods: {
     loadPlates: function() {
+      console.log('loading');
       if (data) {
         if (this.plates.length == 0) this.plates = data;
         this.setListings();
@@ -156,7 +164,7 @@ const MapPage = {
       }
 
       this.loading = true;
-      fetch('/plates?listings=true&listing_limit=600')
+      fetch('/plates?listings=true&listing_limit=1000')
         .then(response => {
           return response.json();
         })
@@ -165,6 +173,7 @@ const MapPage = {
           data = json;
           this.setListings();
           this.loading = false;
+          console.log('loaded');
         })
         .catch(ex => {
           console.log('parsing failed', ex);
@@ -176,29 +185,43 @@ const MapPage = {
       listings = [].concat.apply([], listings);
       console.log(listings);
       this.listings = listings;
+
+      let addToMap = () => {
+        if (this.mapbox) {
+          listings.forEach((l) => {
+            var el = document.createElement('img');
+            el.className = 'marker';
+            el.src = this.thumbnail(l);
+            // el.addEventListener('click', (e) => {
+            //   console.log(e);
+            // });
+
+            // make a marker for each feature and add to the map
+            new mapboxgl.Marker(el)
+              .setLngLat([l.lng, l.lat])
+              .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+              .setHTML('<h3>' + l.title + '</h3><p>' + l.location + '</p>'))
+              .addTo(this.mapbox);
+          });
+        } else {
+          setTimeout(addToMap, 200);
+        }
+      }
+      let timer = setTimeout(addToMap, 200);
+    },
+
+    makeMap: function() {
+      mapboxgl.accessToken = this.accessToken;
+      this.mapbox = new mapboxgl.Map({
+        container: 'map-container',
+        style: 'mapbox://styles/mapbox/light-v9',
+        center: [-96, 37.8],
+        zoom: 3
+      });
     },
 
     imageUrl: imageUrl,
     thumbnail: thumbnail,
-
-    mapStyle: function(listing) {
-      // let x = map(listing.lng, -180, 180, 0, 100);
-      // let y = map(listing.lat, -90, 90, 0, 100);
-      let x = map(listing.lng, -125, 50, 0, 20000);
-      let y = map(listing.lat, 21, 50, 4000, 0);
-      // let x = (listing.lng * 1000)/360;
-      // let y = (listing.lat * 1000)/180;
-      let style = {
-        // position: 'absolute',
-        // left: `${x}%`,
-        // top: `${y}%`,
-        transform: `translate(${x}%, ${y}%)`
-        // width: '20px',
-        // display: listing.lat ? 'block' : 'none',
-        // border: '1px solid #000',
-      };
-      return style;
-    },
   }
 };
 

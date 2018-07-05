@@ -8,6 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="Raycaster Studio and Sam Lavigne">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="/static/style.css?v=1.0">
 </head>
 
@@ -77,11 +78,7 @@
   </script>
 
   <script type="text/template" id="map-page">
-    <div class="map-container">
-      <router-link v-for="listing in listings" class="map-item" :to="{ name: 'plate-page', params: { id: listing.plate_id }}">
-          <img v-tooltip="listing.title + ', ' + listing.location" class="map-listing-image" :src="thumbnail(listing)" :style="mapStyle(listing)">
-      </router-link>
-    </div>
+    <div id="map-container" style=""></div>
   </script>
 
   <script type="text/template" id="plate-page">
@@ -143,6 +140,7 @@
   <script src="/static/vue-router.js"></script>
   <script src="/static/v-tooltip.min.js"></script>
   <script src="/static/vue-3d-model.min.js"></script>
+  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js"></script>
   <script src="/static/app.js"></script>
 </body>
 </html>
