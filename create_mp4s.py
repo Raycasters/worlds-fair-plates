@@ -2,9 +2,12 @@ import sys
 from subprocess import call
 from glob import glob
 
-def pngs_to_mp4(folder, bg):
+def pngs_to_mp4(folder, bg, size='800x800'):
+    print('making', folder)
     for f in glob(folder + '*.png'):
-        call(['convert', f,  '-fill', bg, '-opaque', 'none', f.replace('.png', '.jpg')])
+        args = ['convert', f,  '-fill', bg, '-opaque', 'none', '-resize', size, f.replace('.png', '.jpg')]
+        # print(' '.join(args))
+        call(args)
 
     outname = glob(folder + '*.png')[-1]
     outname = '_'.join(outname.split('_')[:-1]) + '.mp4'
@@ -12,6 +15,13 @@ def pngs_to_mp4(folder, bg):
 
 
 if __name__ == '__main__':
-    pngs_to_mp4(sys.argv[1], 'white')
+    #pngs_to_mp4(sys.argv[1], 'white')
+    for foldername in glob("/Users/sam/Google Drive/Recordings/*"):
+        foldername += '/'
+        try:
+            pngs_to_mp4(foldername, 'white', size='400x400')
+        except Exception as e:
+            print(e)
+            continue
 
 

@@ -263,6 +263,16 @@ const PlatePage = {
     // this.loadListings();
   },
 
+  computed: {
+    nextPlate: function(){
+      return 'hi'
+    },
+
+    prevPlate: function() {
+      return 'bye'
+    }
+  },
+
   methods: {
     loadPlate: function() {
       this.loading = true;
@@ -282,6 +292,14 @@ const PlatePage = {
         .catch(ex => {
           console.log('parsing failed', ex);
         });
+    },
+
+    goLeft: function(e) {
+
+    },
+
+    goRight: function(e) {
+
     },
 
     onLoad: function() {

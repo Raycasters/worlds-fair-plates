@@ -70,7 +70,7 @@
       <div class="plate-container">
         <div v-for="plate in plates" class="plate">
           <router-link :to="{ name: 'plate-page', params: { id: plate.id }}">
-            <video loop @mouseover="startHover" @mouseout="endHover" class="plate-video" :src="'/static/plates/' + '13_WF_bowl_64.webm'"></video>
+            <video loop @mouseover="startHover" @mouseout="endHover" class="plate-video" :src="'/static/' + plate.image.replace('.png', '.mp4')"></video>
             <div class="listing" v-for="listing in plate.listings">
               <img v-tooltip="listing.title + ', ' + listing.location" class="listing-image" :src="thumbnail(listing)" :style="listStyle(listing)">
             </div>
@@ -94,6 +94,12 @@
 
   <script type="text/template" id="plate-page">
     <div class="plate-detail">
+    <!--
+      <div class="plate-pagination">
+        <a :href="nextPlate"><img src="/static/left.png"></a>
+        <a :href="prevPlate"><img src="/static/right.png"></a>
+      </div>
+      -->
       <div class="plate-detail-header">
         <div>
           <model-gltf
@@ -116,13 +122,15 @@
       <div class="plate-detail-listings">
         <div class="plate-detail-listing" v-for="listing in listings">
           <div v-if="admin">
-            <img class="plate-detail-listing-image" :src="thumbnail(listing)">
+            <a :href="listing.listing_url">
+              <img class="plate-detail-listing-image" :src="thumbnail(listing)">
+            </a>
             <p>
               <a :href="listing.listing_url">
                 ${ listing.location.replace(/,/g, ', ') }
                 <img src="/static/external.svg">
               </a>
-              <a :href="'/admin/plates/listing/' +listing.id + '/change/'" class="admin-link">edit</a>
+               <a :href="'/admin/plates/listing/' +listing.id + '/change/'" class="admin-link">edit</a>
             </p>
           </div>
           <a v-else :href="listing.listing_url" target="_blank">

@@ -131,16 +131,17 @@ nav .icon.router-link-active img {
 
 .plate {
   flex: 0 0 auto;
-  width: 12.5%;
+  /* width: 12.5%; */
+  width: 14.2857142857%;
   text-align: center;
-  padding: 3px;
+  padding: 0px;
 }
 
 .plate-image,
 .plate-video {
   width: 100%;
   margin-bottom: 15px;
-  border-radius: 100%;
+  /* border-radius: 100%; */
   /* filter: contrast(200%); */
   /* border: 3px solid #000; */
   /* box-shadow: 0px 0px 10px #000; */
@@ -210,6 +211,11 @@ nav .icon.router-link-active img {
   width: 12.5%;
   padding: 10px;
   font-size: 11px;
+  /* border: 1px solid #000; */
+}
+
+.plate-detail-listing:hover {
+  outline: 1px solid #000;
 }
 
 .plate-detail-listing p {
