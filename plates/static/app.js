@@ -41,6 +41,16 @@ const Home = {
     this.loadPlates();
   },
 
+  mounted: function(){
+    scroller = new SweetScroll(
+      {
+        vertical: false,
+        horizontal: true
+      },
+      '.plate-container'
+    );
+  },
+
   updated: function() {
     scroller = new SweetScroll(
       {
@@ -248,29 +258,32 @@ const PlatePage = {
       id: null,
       title: '',
       description: '',
-      image: null,
+      image: '',
+      nextPlate: 1,
+      prevPlate: 1,
       rotation: {x: 0, y: 0, z: 0},
       speed: 0.001,
       userControl: false,
       admin: window.admin,
+      allPlates: [],
     };
+  },
+
+  watch: {
+    '$route': function(to, from) {
+      console.log(to, from);
+      this.loadPlate();
+      this.getNextPrev();
+      // react to route changes...
+    }
   },
 
   created: function() {
     this.loadPlate();
+    this.loadPlates();
     // this.plate = data.find(p => p.id == this.$route.params.id);
     // console.log(this.plate);
     // this.loadListings();
-  },
-
-  computed: {
-    nextPlate: function(){
-      return 'hi'
-    },
-
-    prevPlate: function() {
-      return 'bye'
-    }
   },
 
   methods: {
@@ -294,8 +307,47 @@ const PlatePage = {
         });
     },
 
-    goLeft: function(e) {
+    loadPlates: function() {
+      if (data) {
+        if (this.allPlates.length == 0) this.allPlates = data;
+        this.getNextPrev();
+        return true;
+      }
 
+      // this.loading = true;
+      fetch('/plates?listings=true&listing_limit=500')
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          this.allPlates = json;
+          data = json;
+          this.getNextPrev();
+        })
+        .catch(ex => {
+          console.log('parsing failed', ex);
+        });
+    },
+
+    getNextPrev: function() {
+      let ids = this.allPlates.map(p => p.id);
+      let currentIndex = ids.indexOf(parseInt(this.$route.params.id));
+      // console.log(this.$route.params.id)
+      let nextIndex = currentIndex + 1;
+      if (nextIndex >= ids.length) nextIndex = 0;
+
+      let prevIndex = currentIndex - 1;
+      if (prevIndex < 0) prevIndex = ids.length-1;
+
+      // console.log(ids)
+      // console.log(nextIndex, prevIndex)
+      
+      this.nextPlate = ids[nextIndex];
+      this.prevPlate = ids[prevIndex];
+    },
+
+    goLeft: function(e){
+      
     },
 
     goRight: function(e) {
@@ -371,7 +423,7 @@ const Welcome = {
   data: function() {
     return {
       rotation: {x: 0, y: 0, z: 0},
-      speed: 0.001,
+      speed: 0.0015,
       userControl: false,
     }
   },
@@ -437,7 +489,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes // short for `routes: routes`
+  routes: routes,
 });
 
 new Vue({

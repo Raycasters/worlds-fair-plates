@@ -94,28 +94,32 @@
 
   <script type="text/template" id="plate-page">
     <div class="plate-detail">
-    <!--
       <div class="plate-pagination">
-        <a :href="nextPlate"><img src="/static/left.png"></a>
-        <a :href="prevPlate"><img src="/static/right.png"></a>
       </div>
-      -->
       <div class="plate-detail-header">
-        <div>
-          <model-gltf
-            :width="300"
-            :height="300"
-            @on-load="onLoad"
-            @on-mousedown="toggleControl"
-            :rotation="rotation"
-            :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: 1.8 } ]"
-            src="/static/plates/05_blue_potter_39_2.gltf"
-          ></model-gltf>
+        <div class="plate-detail-paginate">
+          <router-link :to="{ name: 'plate-page', params: { id: prevPlate }}"><img src="/static/left.png"></router-link>
         </div>
-        <div style="margin-left: 20px;">
-          <h3>What the machine sees</h3>
-          <p>${description}</p>
-          <p v-if="admin"><a class="admin-link" :href="'/admin/plates/plate/' +id + '/change/'">Edit</a></p>
+        <div class="plate-detail-header-content">
+          <div>
+            <model-gltf
+              :width="400"
+              :height="400"
+              @on-load="onLoad"
+              @on-mousedown="toggleControl"
+              :rotation="rotation"
+              :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: 1.8 } ]"
+              :src="'/static/' + image.replace('.png', '.gltf')"
+            ></model-gltf>
+          </div>
+          <div style="margin-left: 100px;">
+            <h3>What the machine sees</h3>
+            <p>${description}</p>
+            <p v-if="admin"><a class="admin-link" :href="'/admin/plates/plate/' +id + '/change/'">Edit</a></p>
+          </div>
+        </div>
+        <div class="plate-detail-paginate">
+          <router-link :to="{ name: 'plate-page', params: { id: nextPlate }}"><img src="/static/right.png"></router-link>
         </div>
       </div>
 
