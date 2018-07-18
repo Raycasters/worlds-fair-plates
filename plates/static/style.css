@@ -99,13 +99,22 @@ nav .icon.router-link-active span {
   margin-right: auto;
 }
 
-.welcome,
-.info-screen {
+.welcome {
   text-align: center;
   line-height: 160%;
   max-width: 600px;
   margin: auto;
   padding: 10px;
+}
+
+.info-screen {
+  max-width: 800px;
+  line-height: 2;
+  font-size: 12px;
+  margin: auto;
+  margin-top: 60px;
+  margin-bottom: 60px;
+
 }
 
 .explore {
