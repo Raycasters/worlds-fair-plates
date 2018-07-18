@@ -52,9 +52,28 @@ nav {
   margin-left: auto;
 }
 
+nav .icon {
+  display: inline-block;
+  font-size: 9px;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
+  /* margin-top: 10px; */
+}
+
+nav .icon span {
+  display: none;
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  width: 45px;
+  opacity: 1;
+}
+
 nav .icon img {
-  height: 35px;
-  padding: 5px;
+  height: 45px;
+  padding: 0px;
+  display: block;
   /* display: inline-block; */
 }
 
@@ -62,6 +81,12 @@ nav .icon.selected img,
 nav .icon:hover img,
 nav .icon.router-link-active img {
   outline: 1px solid #000;
+}
+
+nav .icon.selected span,
+nav .icon:hover span,
+nav .icon.router-link-active span {
+  display: block;
 }
 
 #logo {
@@ -272,8 +297,24 @@ nav .icon.router-link-active img {
   top: 90px;
   bottom: 0;
   width: 100px;
-  overflow-y: scroll;
-  background-color: rgba(255, 255, 255, 0.6);
+  /* overflow-y: scroll; */
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 10px;
+}
+
+.paginate-up, .paginate-down {
+  margin: 10px;
+  padding: 10px;
+}
+
+.paginate-up img, .paginate-down img {
+  width: 100%;
+  display: block;
 }
 
 #map-plate-holder .map-plate {
@@ -286,6 +327,11 @@ nav .icon.router-link-active img {
 #map-plate-holder .map-plate img {
   display: block;
   width: 100%;
+}
+
+.map-plates {
+  flex-shrink: 1;
+  overflow: scroll;
 }
 
 .map-container {
@@ -313,13 +359,16 @@ nav .icon.router-link-active img {
 .tooltip {
   display: block !important;
   z-index: 10000;
+  font-size: 10px;
+  line-height: 1.6;
 }
 .tooltip .tooltip-inner {
-  background: black;
-  color: white;
+  background: #231F20;
+  color: #edfd38;
+  border: 1px solid #edfd38;
   /* border-radius: 16px; */
   /* padding: 5px 10px 4px; */
-  padding: 10px;
+  padding: 15px;
   max-width: 200px;
 }
 .tooltip .tooltip-arrow {
@@ -328,7 +377,7 @@ nav .icon.router-link-active img {
   border-style: solid;
   position: absolute;
   margin: 5px;
-  border-color: black;
+  border-color: #edfd38;
   z-index: 1;
 }
 .tooltip[x-placement^="top"] {
@@ -392,4 +441,37 @@ nav .icon.router-link-active img {
   visibility: visible;
   opacity: 1;
   transition: opacity 0.15s;
+}
+
+.mapboxgl-popup-content {
+  background: #231F20;
+  color: #edfd38;
+  border: 1px solid #edfd38;
+  max-width: 300px;
+  font-size: 10px;
+}
+
+.mapboxgl-popup-content a {
+  color: #edfd38;
+  text-decoration: underline;
+}
+
+.mapboxgl-popup-content h3 {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 3px;
+}
+
+.mapboxgl-popup-content p {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 3px;
+}
+
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+  border-bottom-color: #edfd38;
+}
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: #edfd38;
 }

@@ -19,8 +19,11 @@
 
   <div id="app">
     <nav>
-      <div class="nav-item">
-        <router-link to="/info">info</router-link>
+      <div class="nav-item" style="justify-content:left">
+        <span>
+          <router-link to="/info">INFO</router-link>
+          <a style="margin-left: 20px;" href="https://goo.gl/forms/o5QySj1c28RiPDH02" target="blank">submit your own</a>
+        </span>
       </div>
       <div class="nav-item">
         <router-link to="/plates" id="logo">Plates of the World</router-link>
@@ -28,8 +31,8 @@
 
       <div class="nav-item">
         <div class="nav-icons" v-show="$route.path!='/'">
-          <router-link class="icon" to="/plates"><img src="/static/list.png"></router-link>
-          <router-link class="icon" to="/map"><img src="/static/map.png"></router-link>
+          <router-link class="icon" to="/plates"><img src="/static/list.png"><span>Grid</span></router-link>
+          <router-link class="icon" to="/map"><img src="/static/map.png"><span>Map</span></router-link>
         </div>
       </div>
     </nav>
@@ -84,8 +87,17 @@
   <script type="text/template" id="map-page">
     <div>
       <div id="map-plate-holder">
-        <div class="map-plate" @click="showPlate(plate.id)" href="#" v-for="plate in plates">
-          <img :src="'/static/' + plate.image">
+        <a href="#" @click="viewAll">View All</a>
+        <div class="paginate-up">
+          <a href="#" @click="goUp"><img src="/static/up.png"></a>
+        </div>
+        <div class="map-plates">
+          <div class="map-plate" @click="showPlate(plate.id)" href="#" v-for="plate in plates">
+            <img :src="'/static/' + plate.image">
+          </div>
+        </div>
+        <div class="paginate-down">
+          <a href="#" @click="goDown"><img src="/static/down.png"></a>
         </div>
       </div>
       <div id="map-container" style=""></div>

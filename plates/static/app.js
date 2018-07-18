@@ -161,7 +161,6 @@ const MapPage = {
 
   mounted: function() {
     this.makeMap();
-    console.log('made map');
   },
 
   methods: {
@@ -191,7 +190,6 @@ const MapPage = {
     },
 
     showPlate: function(plateID) {
-      console.log(plateID);
       let allListings = document.querySelectorAll('.marker');
       let listings = document.querySelectorAll('.marker-' + plateID);
       for (let i = 0; i < allListings.length; i++) {
@@ -200,6 +198,38 @@ const MapPage = {
       for (let i = 0; i < listings.length; i++) {
         listings[i].classList.add('selected');
       }
+    },
+
+    viewAll: function(e) {
+      e.preventDefault();
+      let allListings = document.querySelectorAll('.marker');
+      for (let i = 0; i < allListings.length; i++) {
+        allListings[i].classList.add('selected');
+      }
+    },
+
+    goUp: function(e) {
+      e.preventDefault();
+      let scroll = new SweetScroll(
+        {
+          vertical: true,
+          horizontal: false
+        },
+        '.map-plates'
+      );
+      scroll.to('-=' + document.querySelector('.map-plates').clientHeight);
+    },
+
+    goDown: function(e) {
+      e.preventDefault();
+      let scroll = new SweetScroll(
+        {
+          vertical: true,
+          horizontal: false
+        },
+        '.map-plates'
+      );
+      scroll.to('+=' + document.querySelector('.map-plates').clientHeight);
     },
 
     setListings: function() {
@@ -223,8 +253,9 @@ const MapPage = {
             new mapboxgl.Marker(el)
               .setLngLat([l.lng, l.lat])
               .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-              .setHTML('<h3>' + l.title + '</h3><p>' + l.location + '</p>'))
+              .setHTML('<h3>' + l.title + '</h3><p>' + l.location + '</p><p><a href="'+l.listing_url+'" target="blank">Original listing</a></p>'))
               .addTo(this.mapbox);
+
           });
         } else {
           setTimeout(addToMap, 200);
@@ -246,6 +277,8 @@ const MapPage = {
     imageUrl: imageUrl,
     thumbnail: thumbnail,
   }
+
+
 };
 
 const PlatePage = {

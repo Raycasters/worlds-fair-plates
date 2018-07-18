@@ -23,7 +23,7 @@ def plate_list(request):
             if request.GET.get('listing_limit'):
                 limit = int(request.GET.get('listing_limit'))
                 listings = listings[0:limit]
-            listings = listings.values('id', 'plate_id', 'title', 'image', 'location', 'lat', 'lng')
+            listings = listings.values('id', 'plate_id', 'title', 'image', 'location', 'lat', 'lng', 'listing_url')
             p['listings'] = list(listings)
 
     all_plates = sorted(list(all_plates), key=lambda k: len(k.get('listings', [])), reverse=True)

@@ -243,8 +243,8 @@ def load_labels(label_file):
 
 
 def test_label(filenames):
-    model_file = "retrained_graph.pb"
-    label_file = "retrained_labels.txt"
+    model_file = "plate_graph.pb"
+    label_file = "plate_labels.txt"
     input_height = 224
     input_width = 224
     input_mean = 128
@@ -281,9 +281,9 @@ def test_label(filenames):
 
 
 
-def label_images():
-    model_file = "retrained_graph.pb"
-    label_file = "retrained_labels.txt"
+def label_images(relabel=False):
+    model_file = "plate_graph.pb"
+    label_file = "plate_labels.txt"
     input_height = 224
     input_width = 224
     input_mean = 128
@@ -294,7 +294,9 @@ def label_images():
     labels = load_labels(label_file)
     graph = load_graph(model_file)
 
-    listings = Listing.objects.exclude(image='default.jpg').exclude(image=None).exclude(confirmed=True).exclude(not_a_plate=True).filter(plate=None)
+    listings = Listing.objects.exclude(image='default.jpg').exclude(image=None)
+    if relabel == False:
+        listings = listings.exclude(confirmed=True).exclude(not_a_plate=True).filter(plate=None)
 
     with tf.Session(graph=graph) as sess:
         for l in listings:
@@ -412,15 +414,3 @@ if __name__ == '__main__':
 
     print('geocoding results')
     geocode_listings()
-
-    # results = search_ebay(keywords[0], 'findItemsAdvanced')
-    # with open('ebay3.json', 'w') as outfile:
-    #     json.dump(results, outfile, indent=2)
-    #
-    # results = search_ebay("World's fair plate", 'findCompletedItems')
-    # with open('ebay2.json', 'w') as outfile:
-    #     json.dump(results, outfile, indent=2)
-    #
-    # results = search_etsy("World's fair plate")
-    # with open('etsy.json', 'w') as outfile:
-    #     json.dump(results, outfile, indent=2)
