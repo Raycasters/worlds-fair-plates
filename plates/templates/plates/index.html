@@ -60,26 +60,29 @@
 
   <script type="text/template" id="home">
     <div>
-      <div class="plate-pagination">
-        <a href="#" @click="goLeft"><img src="/static/left.png"></a>
-        <a href="#" @click="goRight"><img src="/static/right.png"></a>
-      </div>
 
       <div class="loading" v-if="loading">
         <p>loading...</p>
       </div>
 
 
-      <div class="plate-container">
-        <div v-for="plate in plates" class="plate">
-          <router-link :to="{ name: 'plate-page', params: { id: plate.id }}">
-            <video loop @mouseover="startHover" @mouseout="endHover" class="plate-video" :src="'/static/' + plate.image.replace('.png', '.mp4')"></video>
-            <div class="listing" v-for="listing in plate.listings">
-              <img v-tooltip="listing.title + ', ' + listing.location" class="listing-image" :src="thumbnail(listing)" :style="listStyle(listing)">
-            </div>
-          </router-link>
+      <div class="all-plates">
+        <div class="plate-pagination">
+          <a href="#" @click="goLeft"><img src="/static/left.png"></a>
         </div>
-        <br style="clear:both;">
+        <div class="plate-container">
+          <div v-for="plate in plates" class="plate">
+            <router-link :to="{ name: 'plate-page', params: { id: plate.id }}">
+              <video loop @mouseover="startHover" @mouseout="endHover" class="plate-video" :src="'/static/' + plate.image.replace('.png', '.mp4')"></video>
+              <div class="listing" v-for="listing in plate.listings">
+                <img v-tooltip="listing.title + ', ' + listing.location" class="listing-image" :src="thumbnail(listing)" :style="listStyle(listing)">
+              </div>
+            </router-link>
+          </div>
+        </div>
+        <div class="plate-pagination">
+          <a href="#" @click="goRight"><img src="/static/right.png"></a>
+        </div>
       </div>
     </div>
   </script>

@@ -131,12 +131,12 @@ const Home = {
 
     goLeft: function(e) {
       e.preventDefault();
-      scroller.to('-=' + window.innerWidth);
+      scroller.to('-=' + document.querySelector('.plate-container').clientWidth);
     },
 
     goRight: function(e) {
       e.preventDefault();
-      scroller.to('+=' + window.innerWidth);
+      scroller.to('+=' + document.querySelector('.plate-container').clientWidth);
     }
   }
 };
