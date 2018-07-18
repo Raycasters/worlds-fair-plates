@@ -304,19 +304,17 @@ const PlatePage = {
 
   watch: {
     '$route': function(to, from) {
-      console.log(to, from);
       this.loadPlate();
       this.getNextPrev();
-      // react to route changes...
+      this.rotation = {x: 0, y: 0, z: 0};
+      this.speed = 0.001;
+      this.userControl = false;
     }
   },
 
   created: function() {
     this.loadPlate();
     this.loadPlates();
-    // this.plate = data.find(p => p.id == this.$route.params.id);
-    // console.log(this.plate);
-    // this.loadListings();
   },
 
   methods: {
