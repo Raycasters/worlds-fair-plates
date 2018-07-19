@@ -188,7 +188,7 @@ def download_images():
                 listing = Listing.objects.get(original_id=oid)
                 listing_images = []
                 urls = item['PictureURL']
-                for i, url in enumerate(urls):
+                for i, url in enumerate(urls[0:5]):
                     basename = '{}_{}.jpg'.format(oid, str(i).zfill(3))
                     outname = 'listing_images/' + basename
                     print(url, outname)
