@@ -412,7 +412,7 @@ if __name__ == '__main__':
 
     # test_label(sys.argv[1:])
 
-    keywords = ["new york world's fair plate", "1964 world's fair plate new york", "1964 fair plate -license"]
+    keywords = ["world's fair plate", "new york world's fair plate", "1964 world's fair plate new york", "1964 fair plate -license"]
 
     for keyword in keywords:
         results = search_ebay(keyword, 'findItemsAdvanced')['searchResult']['item']
