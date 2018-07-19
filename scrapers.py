@@ -183,20 +183,23 @@ def download_images():
     for _ebay_ids in chunks(ebay_ids, 20):
         response = ebay_api.execute('GetMultipleItems', {'ItemID': _ebay_ids}).dict()
         for item in response['Item']:
-            oid = 'ebay_' + item['ItemID']
-            listing = Listing.objects.get(original_id=oid)
-            listing_images = []
-            urls = item['PictureURL']
-            for i, url in enumerate(urls):
-                basename = '{}_{}.jpg'.format(oid, str(i).zfill(3))
-                outname = 'listing_images/' + basename
-                print(url, outname)
-                download_file(url, outname)
-                listing_images.append(basename)
-                listing.listingimage_set.create(image=basename)
+            try:
+                oid = 'ebay_' + item['ItemID']
+                listing = Listing.objects.get(original_id=oid)
+                listing_images = []
+                urls = item['PictureURL']
+                for i, url in enumerate(urls):
+                    basename = '{}_{}.jpg'.format(oid, str(i).zfill(3))
+                    outname = 'listing_images/' + basename
+                    print(url, outname)
+                    download_file(url, outname)
+                    listing_images.append(basename)
+                    listing.listingimage_set.create(image=basename)
 
-            listing.image = listing_images[0]
-            listing.save()
+                listing.image = listing_images[0]
+                listing.save()
+            except:
+                continue
 
 
 def load_graph(model_file):
