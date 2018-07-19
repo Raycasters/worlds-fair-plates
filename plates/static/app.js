@@ -299,11 +299,15 @@ const PlatePage = {
       userControl: false,
       admin: window.admin,
       allPlates: [],
+      loaded: false,
     };
   },
 
   watch: {
     '$route': function(to, from) {
+      window.cancelAnimationFrame(this.animationFrame);
+      this.loaded = false;
+      this.image = '';
       this.loadPlate();
       this.getNextPrev();
       this.rotation = {x: 0, y: 0, z: 0};
@@ -319,7 +323,7 @@ const PlatePage = {
 
   methods: {
     loadPlate: function() {
-      this.loading = true;
+      this.loaded = false;
 
       fetch('/plates/' + this.$route.params.id)
         .then(response => {
@@ -331,7 +335,7 @@ const PlatePage = {
           this.title = json.title;
           this.description = json.description;
           this.image = json.image;
-          this.loading = false;
+          this.loaded = true;
         })
         .catch(ex => {
           console.log('parsing failed', ex);
@@ -400,7 +404,7 @@ const PlatePage = {
       if (this.rotation.y > .5 || this.rotation.y < -.5){
         this.speed *= -1;
       }
-      requestAnimationFrame( this.rotate );
+      this.animationFrame = requestAnimationFrame( this.rotate );
     },
 
     imageUrl: imageUrl,

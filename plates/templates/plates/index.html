@@ -117,7 +117,7 @@
         </div>
         <div class="plate-detail-header-content">
           <div>
-            <model-gltf
+            <model-gltf v-if="loaded" 
               :width="400"
               :height="400"
               @on-load="onLoad"
