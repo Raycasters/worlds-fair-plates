@@ -338,6 +338,21 @@ def label_images(relabel=False):
             #     print(template.format(labels[i], results[i]))
 
 
+def remove_duplicates():
+    all_listings = Listing.objects.all().exclude(duplicate=True)
+
+    for listing in all_listings:
+        title = listing.title
+        location = listing.location
+
+        print('checking', listing.id)
+        duplicates = Listing.objects.all().filter(title=title, location=location).exclude(id=listing.id).exclude(duplicate=True)
+        for d in duplicates:
+            print('deleting', d.id)
+            d.duplicate = True
+            d.save()
+
+
 def geocode_listings():
     listings = Listing.objects.filter(lat=None).exclude(location='unknown').exclude(plate=None)
     for l in listings:
@@ -394,7 +409,7 @@ if __name__ == '__main__':
 
     # test_label(sys.argv[1:])
 
-    keywords = ["1964 world's fair plate new york", "1964 fair plate -license"]
+    keywords = ["new york world's fair plate", "1964 world's fair plate new york", "1964 fair plate -license"]
 
     for keyword in keywords:
         results = search_ebay(keyword, 'findItemsAdvanced')['searchResult']['item']
@@ -414,3 +429,7 @@ if __name__ == '__main__':
 
     print('geocoding results')
     geocode_listings()
+
+    print('removing duplicates')
+    remove_duplicates()
+

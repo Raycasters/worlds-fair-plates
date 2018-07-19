@@ -19,6 +19,7 @@ def plate_list(request):
     if request.GET.get('listings'):
         for p in all_plates:
             listings = Listing.objects.all().filter(plate_id=p['id'])
+            listings = listings.exclude(duplicate=True)
             listings = listings.filter(confidence__gt=0.5)
             listings = listings.filter(confirmed=True).order_by('-confidence')
             if request.GET.get('listing_limit'):
@@ -38,6 +39,7 @@ def plate_details(request, pk):
         'id': plate.id, 'title': plate.title, 'description': plate.description, 'image': plate.image
     }
     listings = Listing.objects.all().filter(plate_id=output['id'])
+    listings = listings.exclude(duplicate=True)
     listings = listings.filter(confidence__gt=0.5)
     listings = listings.filter(confirmed=True).order_by('-confidence')
     if request.GET.get('listing_limit'):
@@ -60,6 +62,7 @@ def listings(request):
     if query.get('confirmed'):
         all_listings = all_listings.filter(confirmed=True)
         all_listings = all_listings.filter(confidence__gt=0.5)
+        all_listings = all_listings.exclude(duplicate=True)
 
     if query.get('limit'):
         all_listings = all_listings[0:int(query.get('limit'))]

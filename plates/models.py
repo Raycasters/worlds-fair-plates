@@ -39,6 +39,7 @@ class Listing(models.Model):
     original_id = models.CharField(max_length=255, unique=True, default=0)
     original_listing = JSONField()
     confirmed = models.BooleanField(default=False)
+    duplicate = models.BooleanField(default=False)
     not_a_plate = models.BooleanField(default=False)
     confidence = models.FloatField(default=0.0)
 
