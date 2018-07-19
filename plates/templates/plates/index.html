@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Plates of the World</title>
   <meta name="description" content="">
   <meta name="author" content="Raycaster Studio and Sam Lavigne">
@@ -116,10 +117,8 @@
           <router-link :to="{ name: 'plate-page', params: { id: prevPlate }}"><img src="/static/left.png"></router-link>
         </div>
         <div class="plate-detail-header-content">
-          <div style="width:400px; height:405px;display:flex;align-items:center;justify-content:center;">
+          <div class="plate-model-holder">
             <model-gltf v-if="loaded"
-              :width="400"
-              :height="400"
               @on-load="onLoad"
               @on-mousedown="toggleControl"
               :rotation="rotation"
@@ -128,7 +127,7 @@
             ></model-gltf>
             <p v-else>Loading</p>
           </div>
-          <div style="margin-left: 100px;">
+          <div class="plate-machine-vision">
             <h3>What the machine sees</h3>
             <p>${description}</p>
             <p v-if="admin"><a class="admin-link" :href="'/admin/plates/plate/' +id + '/change/'">Edit</a></p>
