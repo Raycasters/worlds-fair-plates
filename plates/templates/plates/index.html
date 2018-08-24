@@ -141,11 +141,11 @@
       <div class="plate-detail-listings">
         <div class="plate-detail-listing" v-for="listing in listings">
           <div v-if="admin">
-            <a :href="listing.listing_url">
+            <a :href="listing.listing_url" target="_blank">
               <img class="plate-detail-listing-image" :src="thumbnail(listing)">
             </a>
             <p>
-              <a :href="listing.listing_url">
+              <a :href="listing.listing_url" target="_blank">
                 ${ listing.location.replace(/,/g, ', ') }
                 <img src="/static/external.svg">
               </a>

@@ -24,7 +24,8 @@
       }
 
       #holder {
-
+        display: flex;
+        flex-direction: column;
       }
     </style>
   </head>
@@ -37,6 +38,7 @@
            @on-mousedown="toggleControl"
            :rotation="rotation"
            :src="plateSource"
+           :controllable="false"
         ></model-gltf>
         <p>{{ text }}</p>
       </div>
