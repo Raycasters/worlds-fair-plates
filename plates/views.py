@@ -36,7 +36,7 @@ def plate_list(request):
 def plate_details(request, pk):
     plate = get_object_or_404(Plate, pk=pk)
     output = {
-        'id': plate.id, 'title': plate.title, 'description': plate.description, 'image': plate.image
+        'id': plate.id, 'title': plate.title, 'description': plate.description, 'image': plate.image, 'intensity': plate.lightIntensity
     }
     listings = Listing.objects.all().filter(plate_id=output['id'])
     listings = listings.exclude(duplicate=True)

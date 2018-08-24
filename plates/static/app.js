@@ -33,7 +33,9 @@ const Home = {
       plates: [],
       listings: [],
       plate: null,
-      loading: false
+      loading: false,
+      scroll: 0,
+      rightArrowOpacity: 1,
     };
   },
 
@@ -131,12 +133,19 @@ const Home = {
 
     goLeft: function(e) {
       e.preventDefault();
-      scroller.to('-=' + document.querySelector('.plate-container').clientWidth);
+      let el = document.querySelector('.plate-container');
+      scroller.to('-=' + el.clientWidth);
     },
 
     goRight: function(e) {
       e.preventDefault();
-      scroller.to('+=' + document.querySelector('.plate-container').clientWidth);
+      let el = document.querySelector('.plate-container');
+      scroller.to('+=' + el.clientWidth);
+    },
+
+    changeScroll: function(e) {
+      this.scroll = e.target.scrollLeft;
+      this.rightArrowOpacity = e.target.scrollLeft < e.target.scrollWidth - e.target.clientWidth ? 1 : 0.0;
     }
   }
 };
@@ -152,6 +161,9 @@ const MapPage = {
       loading: false,
       accessToken: "pk.eyJ1IjoienNjaG5laWRlciIsImEiOiJjaXg3eWUzeGowMXEyMnlxeWI1MzBudzN0In0.i-aef9w2ifwlPvXerrQOwA",
       mapStyle: "MAP_STYLE", // your map style
+      selected: null,
+      scroll: 0,
+      downArrowOpacity: 1
     };
   },
 
@@ -190,6 +202,7 @@ const MapPage = {
     },
 
     showPlate: function(plateID) {
+      this.selected = plateID;
       let allListings = document.querySelectorAll('.marker');
       let listings = document.querySelectorAll('.marker-' + plateID);
       for (let i = 0; i < allListings.length; i++) {
@@ -202,10 +215,16 @@ const MapPage = {
 
     viewAll: function(e) {
       e.preventDefault();
+      this.selected = null;
       let allListings = document.querySelectorAll('.marker');
       for (let i = 0; i < allListings.length; i++) {
         allListings[i].classList.add('selected');
       }
+    },
+
+    onScroll: function(e) {
+      this.scroll = e.target.scrollTop;
+      this.downArrowOpacity = e.target.scrollTop < e.target.scrollHeight - e.target.clientHeight ? 1 : 0.0;
     },
 
     goUp: function(e) {
@@ -276,6 +295,12 @@ const MapPage = {
 
     imageUrl: imageUrl,
     thumbnail: thumbnail,
+  },
+
+  computed: {
+    upArrowOpacity: function() {
+      return this.scroll > 0 ? 1 : 0.0;
+    },
   }
 
 
@@ -300,6 +325,7 @@ const PlatePage = {
       admin: window.admin,
       allPlates: [],
       loaded: false,
+      lightIntensity: 0.8
     };
   },
 
@@ -335,6 +361,7 @@ const PlatePage = {
           this.title = json.title;
           this.description = json.description;
           this.image = json.image;
+          this.lightIntensity = json.intensity;
           this.loaded = true;
         })
         .catch(ex => {

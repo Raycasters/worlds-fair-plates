@@ -6,7 +6,9 @@ class Plate(models.Model):
     title = models.CharField(max_length=255)
     label = models.CharField(max_length=255, blank=True, null=True)
     image = models.CharField(max_length=255, default='default.jpg')
+    lightIntensity = models.FloatField(default=0.8)
     description = models.TextField()
+
 
     def images(self):
          return PlateImage.objects.filter(plate=self)

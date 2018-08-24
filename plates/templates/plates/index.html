@@ -31,7 +31,7 @@
       </div>
 
       <div class="nav-item">
-        <div class="nav-icons" v-show="$route.path!='/'">
+        <div class="nav-icons" :style="{opacity: $route.path == '/' ? 0 : 1}">
           <router-link class="icon" to="/plates"><img src="/static/list.png"><span>Grid</span></router-link>
           <router-link class="icon" to="/map"><img src="/static/map.png"><span>Map</span></router-link>
         </div>
@@ -48,8 +48,8 @@
           @on-load="onLoad"
           @on-mousedown="toggleControl"
           :rotation="rotation"
-          :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: 1.8 } ]"
-          src="/static/plates/05_blue_potter_39_2.gltf"
+          :lights="[{ type: 'AmbientLight', color: 0xaaaaaa, intensity: 1.9 }, ]"
+          src="/static/plates/21_pink_rim_64.gltf"
         ></model-gltf>
       <p>This site is dedicated to the collectible plates produced to commemorate the 1939 and 1964 NY World's Fairs.</p>
       <p>Where are these plates today?</p>
@@ -68,10 +68,10 @@
 
 
       <div class="all-plates" v-else>
-        <div class="plate-pagination">
+        <div class="plate-pagination" :style="{opacity: scroll > 0 ? 1 : 0}">
           <a href="#" @click="goLeft"><img src="/static/left.png"></a>
         </div>
-        <div class="plate-container">
+        <div class="plate-container" @scroll="changeScroll">
           <div v-for="plate in plates" class="plate">
             <router-link :to="{ name: 'plate-page', params: { id: plate.id }}">
               <video loop @mouseover="startHover" @mouseout="endHover" class="plate-video" :src="'/static/' + plate.image.replace('.png', '.mp4')"></video>
@@ -81,7 +81,7 @@
             </router-link>
           </div>
         </div>
-        <div class="plate-pagination">
+        <div class="plate-pagination" :style="{opacity: rightArrowOpacity}">
           <a href="#" @click="goRight"><img src="/static/right.png"></a>
         </div>
       </div>
@@ -91,16 +91,16 @@
   <script type="text/template" id="map-page">
     <div>
       <div id="map-plate-holder">
-        <a href="#" @click="viewAll">View All</a>
-        <div class="paginate-up">
+        <a href="#" :class="{selected: selected==null}" @click="viewAll">View All</a>
+        <div class="paginate-up" :style="{opacity: upArrowOpacity}">
           <a href="#" @click="goUp"><img src="/static/up.png"></a>
         </div>
-        <div class="map-plates">
-          <div class="map-plate" @click="showPlate(plate.id)" href="#" v-for="plate in plates">
+        <div class="map-plates" @scroll="onScroll">
+          <div :class="{mapPlate: true, selected: selected==plate.id}" @click="showPlate(plate.id)" href="#" v-for="plate in plates">
             <img :src="'/static/' + plate.image">
           </div>
         </div>
-        <div class="paginate-down">
+        <div class="paginate-down" :style="{opacity: downArrowOpacity}">
           <a href="#" @click="goDown"><img src="/static/down.png"></a>
         </div>
       </div>
@@ -122,7 +122,7 @@
               @on-load="onLoad"
               @on-mousedown="toggleControl"
               :rotation="rotation"
-              :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: 1.8 } ]"
+              :lights="[{ type: 'AmbientLight', color: 0xaaaaaa }, { type: 'DirectionalLight', position: { x: 1, y: 1, z: 1 }, color: 0xffffff, intensity: lightIntensity }]"
               :src="'/static/' + image.replace('.png', '.gltf')"
             ></model-gltf>
             <p v-else>Loading</p>
@@ -221,7 +221,7 @@
   <script src="https://unpkg.com/sweet-scroll/sweet-scroll.min.js"></script>
   <script src="/static/vue-router.js"></script>
   <script src="/static/v-tooltip.min.js"></script>
-  <script src="/static/vue-3d-model.min.js"></script>
+  <script src="/static/vue-3d-model.js"></script>
   <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js"></script>
   <script src="/static/app.js"></script>
 </body>

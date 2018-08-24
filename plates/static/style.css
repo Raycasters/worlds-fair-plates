@@ -195,7 +195,7 @@ nav .icon.router-link-active span {
 }
 
 .plate-detail-header {
-  margin-bottom: 60px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -321,16 +321,20 @@ nav .icon.router-link-active span {
   display: block;
 }
 
-#map-plate-holder .map-plate {
+#map-plate-holder .mapPlate {
   display: block;
   margin: auto;
   padding: 5px 20px;
   cursor: pointer;
 }
 
-#map-plate-holder .map-plate img {
+#map-plate-holder .mapPlate img {
   display: block;
   width: 100%;
+}
+
+#map-plate-holder .selected {
+  background-color: #edfd38;
 }
 
 .map-plates {
