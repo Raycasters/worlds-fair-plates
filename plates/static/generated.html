@@ -338,7 +338,7 @@
           plates: plates,
           current: 0,
           rotation: {x: 0, y: Math.PI * 2.5, z: 0},
-          speed: 0.009,
+          speed: 0.0025,
           userControl: false,
           loaded: false,
           plateSource: 'generated_plates/' + plates[0].name + '.gltf',
@@ -381,7 +381,7 @@
 
           rotate: function () {
             this.rotation.y += this.speed;
-            if (this.rotation.y > Math.PI * 4.2) {
+            if (this.rotation.y > Math.PI * 4.33) {
               this.opacity -= 0.01;
             } else {
               if (this.opacity < 1) {
