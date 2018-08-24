@@ -298,7 +298,7 @@ nav .icon.router-link-active span {
   left: 0;
   top: 90px;
   bottom: 0;
-  width: 100px;
+  width: 110px;
   /* overflow-y: scroll; */
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0.7);
@@ -324,7 +324,7 @@ nav .icon.router-link-active span {
 #map-plate-holder .mapPlate {
   display: block;
   margin: auto;
-  padding: 5px 20px;
+  padding: 6px 6px;
   cursor: pointer;
 }
 
