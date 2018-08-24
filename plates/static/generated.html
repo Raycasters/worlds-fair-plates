@@ -337,8 +337,8 @@
         data: {
           plates: plates,
           current: 0,
-          rotation: {x: 0, y: Math.PI, z: 0},
-          speed: 0.002,
+          rotation: {x: 0, y: Math.PI * 2.5, z: 0},
+          speed: 0.009,
           userControl: false,
           loaded: false,
           plateSource: 'generated_plates/' + plates[0].name + '.gltf',
@@ -355,6 +355,7 @@
 
         methods: {
           increment: function() {
+            window.cancelAnimationFrame(this.animationFrame);
             var current = this.current;
             current += 1;
             if (current > this.plates.length - 1) {
@@ -363,8 +364,9 @@
             this.current = current;
             this.text = this.plates[current].text
             this.plateSource = 'generated_plates/' + this.plates[current].name + '.gltf';
-            this.rotation = {x: 0, y: 3.14, z: 0};
-            this.opacity = 1;
+            // this.rotation = {x: 0, y: 3.14, z: 0};
+            this.rotation = {x: 0, y: Math.PI * 2.5, z: 0};
+            // this.opacity = 1;
           },
 
           onLoad: function() {
@@ -379,8 +381,12 @@
 
           rotate: function () {
             this.rotation.y += this.speed;
-            if (this.rotation.y > Math.PI * 2) {
-              this.opacity -= .01;
+            if (this.rotation.y > Math.PI * 4.2) {
+              this.opacity -= 0.01;
+            } else {
+              if (this.opacity < 1) {
+                this.opacity += 0.01;
+              }
             }
             if (this.opacity <= 0) {
               this.increment();
