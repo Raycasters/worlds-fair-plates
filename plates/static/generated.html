@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <style>
+      html {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        text-align: center;
+        font: 16px Montserrat;
+        width: 100%;
+        height: 100%;
+        text-transform: uppercase;
+      }
+
+      #app {
+        width: 100%;
+        height: 100%;
+      }
+
+      #holder {
+
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div id="holder" :style="{opacity: opacity}">
+         <model-gltf
+           @on-load="onLoad"
+           @on-mousedown="toggleControl"
+           :rotation="rotation"
+           :src="plateSource"
+        ></model-gltf>
+        <p>{{ text }}</p>
+      </div>
+    </div>
+
+
+    <script src="/static/vue.js"></script>
+    <script src="/static/vue-3d-model.js"></script>
+
+    <script>
+      function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+        return array;
+      }
+
+      var plates = [
+        {"name": "G01_P01", "text": "sign color vehicle juxtaposed with achievement"},
+        {"name": "G01_P02", "text": "people color creativity leaning on investment"},
+        {"name": "G01_P03", "text": "image health food bent over business"},
+        {"name": "G01_P04", "text": "shopping bowl two not far from investment"},
+        {"name": "G01_P05", "text": "sign color two next to cash"},
+        {"name": "G01_P06", "text": "ceramic business number below cash"},
+        {"name": "G01_P07", "text": "human closeup painting below dollar"},
+        {"name": "G01_P08", "text": "people medicine painting leaning on loan"},
+        {"name": "G01_P09", "text": "market one commerce leaning on cash"},
+        {"name": "G01_P10", "text": "market lifestyle text facing gambling"},
+        {"name": "G02_P12", "text": "decoration vehicle juxtaposed with people"},
+        {"name": "G02_P13", "text": "pottery watercraft juxtaposed with river"},
+        {"name": "G02_P14", "text": "traditional antique eclipsed by ship"},
+        {"name": "G02_P15", "text": "ancient sea juxtaposed with military"},
+        {"name": "G02_P16", "text": "ornate ship bent over war"},
+        {"name": "G02_P17", "text": "pattern outdoors leaning on man"},
+        {"name": "G02_P18", "text": "design illustration behind watercraft"},
+        {"name": "G02_P19", "text": "retro watercraft facing architecture"},
+        {"name": "G02_P20", "text": "vintage antique ahead of group"},
+        {"name": "G02_P21", "text": "pattern winter below no"},
+        {"name": "G03_P23", "text": "round no behind science"},
+        {"name": "G03_P24", "text": "nature equipment leaning on light"},
+        {"name": "G03_P25", "text": "round card juxtaposed with machine"},
+        {"name": "G03_P26", "text": "table time sorrounded by light"},
+        {"name": "G03_P27", "text": "image number behind indoors"},
+        {"name": "G03_P28", "text": "retro desktop juxtaposed with modern"},
+        {"name": "G03_P29", "text": "retro text bent over industry"},
+        {"name": "G03_P30", "text": "decoration card below inside"},
+        {"name": "G03_P31", "text": "nature card above medicine"},
+        {"name": "G03_P32", "text": "closeup text below science"},
+        {"name": "G04_P34", "text": "antique sorrounded by card"},
+        {"name": "G04_P35", "text": "table not far from illustration"},
+        {"name": "G04_P36", "text": "dish next to adult"},
+        {"name": "G04_P37", "text": "round ahead of shape"},
+        {"name": "G04_P38", "text": "indoors leaning on celebration"},
+        {"name": "G04_P39", "text": "antique next to celebration"},
+        {"name": "G04_P40", "text": "round in front of child"},
+        {"name": "G04_P41", "text": "wood eclipsed by celebration"},
+        {"name": "G04_P42", "text": "plate not far from recreation"},
+        {"name": "G04_P43", "text": "indoors ahead of still"},
+        {"name": "G05_P45", "text": "no desktop above liquidity"},
+        {"name": "G05_P46", "text": "graphic biology eclipsed by liquidity"},
+        {"name": "G05_P47", "text": "no art juxtaposed with wallpaper"},
+        {"name": "G05_P48", "text": "symbol graphic eclipsed by turquoise"},
+        {"name": "G05_P49", "text": "abstract technology sorrounded by closeup"},
+        {"name": "G05_P50", "text": "image anatomy next to liquidity"},
+        {"name": "G05_P51", "text": "decoration art juxtaposed with liquidity"},
+        {"name": "G05_P52", "text": "shape shape juxtaposed with turquoise"},
+        {"name": "G05_P53", "text": "symbol medical eclipsed by background"},
+        {"name": "G05_P54", "text": "symbol desktop eclipsed by closeup"},
+        {"name": "G06_P56", "text": "illustration vintage food bent over one united"},
+        {"name": "G06_P57", "text": "round vintage food above people travel"},
+        {"name": "G06_P58", "text": "label desktop card bent over people united"},
+        {"name": "G06_P59", "text": "print vintage color next to administration traditional"},
+        {"name": "G06_P60", "text": "round desktop print next to administration united"},
+        {"name": "G06_P61", "text": "no vector print above administration traditional"},
+        {"name": "G06_P62", "text": "round luck print juxtaposed with architecture travel"},
+        {"name": "G06_P63", "text": "retro poker print juxtaposed with one united"},
+        {"name": "G06_P64", "text": "vintage luck food not far from administration traditional"},
+        {"name": "G06_P65", "text": "ancient money food next to one traditional"},
+        {"name": "G07_P67", "text": "art business facing number"},
+        {"name": "G07_P68", "text": "round paper above number"},
+        {"name": "G07_P69", "text": "design guidance behind pattern"},
+        {"name": "G07_P70", "text": "ceramic text leaning on gambling"},
+        {"name": "G07_P71", "text": "design spherical behind currency"},
+        {"name": "G07_P72", "text": "ceramic spherical leaning on pattern"},
+        {"name": "G07_P73", "text": "antique food leaning on pattern"},
+        {"name": "G07_P74", "text": "design pottery eclipsed by achievement"},
+        {"name": "G07_P75", "text": "earthenware decoration in front of risk"},
+        {"name": "G07_P76", "text": "earthenware symbol in front of gambling"},
+        {"name": "G08_P77", "text": "no finance juxtaposed with chair"},
+        {"name": "G08_P78", "text": "old bank sorrounded by chair"},
+        {"name": "G08_P79", "text": "art commerce ahead of building"},
+        {"name": "G08_P81", "text": "antique text below paper"},
+        {"name": "G08_P82", "text": "no money not far from architecture"},
+        {"name": "G08_P83", "text": "art bank eclipsed by wealth"},
+        {"name": "G08_P84", "text": "no text behind unite"},
+        {"name": "G08_P85", "text": "symbol commerce in front of united"},
+        {"name": "G08_P86", "text": "travel currency eclipsed by dome"},
+        {"name": "G08_P87", "text": "old print not far from architecture"},
+        {"name": "G09_P89", "text": "design traditional drink ahead of horizontal"},
+        {"name": "G09_P90", "text": "pottery no H2O juxtaposed with indoors"},
+        {"name": "G09_P91", "text": "round pattern vertical bent over decoration"},
+        {"name": "G09_P92", "text": "decoration market vintage next to decoration"},
+        {"name": "G09_P93", "text": "dishware pattern currency eclipsed by indoors"},
+        {"name": "G09_P94", "text": "style isolate drink not far from horizontal"},
+        {"name": "G09_P95", "text": "round old vertical behind indoors"},
+        {"name": "G09_P96", "text": "retro business vertical in front of horizontal"},
+        {"name": "G09_P97", "text": "design old drink next to finance"},
+        {"name": "G09_P98", "text": "pattern isolate horizontal surrounded by wealth"},
+        {"name": "G10_P100", "text": "wood bent over painting"},
+        {"name": "G10_P101", "text": "instrument below religion"},
+        {"name": "G10_P102", "text": "adult facing veil"},
+        {"name": "G10_P103", "text": "symbol behind veil"},
+        {"name": "G10_P104", "text": "illustration leaning on artistic"},
+        {"name": "G10_P105", "text": "man leaning on sign"},
+        {"name": "G10_P106", "text": "adult bent over print"},
+        {"name": "G10_P107", "text": "pottery leaning on cross"},
+        {"name": "G10_P108", "text": "group ahead of cross"},
+        {"name": "G10_P109", "text": "symbol facing painting"},
+        {"name": "G11_P111", "text": "equipment not far from ball"},
+        {"name": "G11_P112", "text": "cooking in front of retro"},
+        {"name": "G11_P113", "text": "utensil juxtaposed with competition"},
+        {"name": "G11_P114", "text": "tableware leaning on signalise"},
+        {"name": "G11_P115", "text": "tableware ahead of label"},
+        {"name": "G11_P116", "text": "flatware behind sign"},
+        {"name": "G11_P117", "text": "audio juxtaposed with vintage"},
+        {"name": "G11_P118", "text": "indoors bent over sign"},
+        {"name": "G11_P119", "text": "round sorrounded by text"},
+        {"name": "G11_P120", "text": "music eclipsed by sign"},
+        {"name": "G12_P122", "text": "ornate print leaning on outdoors"},
+        {"name": "G12_P123", "text": "desktop vehicle next to bill"},
+        {"name": "G12_P124", "text": "image business below outdoors"},
+        {"name": "G12_P125", "text": "desktop geography ahead of bill"},
+        {"name": "G12_P126", "text": "illustration trip not far from exploration"},
+        {"name": "G12_P127", "text": "symbol man bent over communication"},
+        {"name": "G12_P128", "text": "painting trip behind bill"},
+        {"name": "G12_P129", "text": "image vehicle not far from outdoors"},
+        {"name": "G12_P130", "text": "ball-shaped people leaning on travel"},
+        {"name": "G12_P131", "text": "travel technology ahead of paper"},
+        {"name": "G13_P133", "text": "vintage tree not far from architecture"},
+        {"name": "G13_P134", "text": "nautical ball-shaped next to urban"},
+        {"name": "G13_P135", "text": "old island leaning on spray"},
+        {"name": "G13_P136", "text": "ball-shaped vacation behind paper"},
+        {"name": "G13_P137", "text": "ocean cityscape above architecture"},
+        {"name": "G13_P138", "text": "round tree next to wall"},
+        {"name": "G13_P139", "text": "round vacation eclipsed by paper"},
+        {"name": "G13_P140", "text": "map vacation juxtaposed with city"},
+        {"name": "G13_P141", "text": "thread tourism in front of color"},
+        {"name": "G13_P142", "text": "thread tree eclipsed by desktop "},
+        {"name": "G14_P144", "text": "group travel group not far from money"},
+        {"name": "G14_P145", "text": "illustration exhibition vehicle next to money"},
+        {"name": "G14_P146", "text": "text print group above wealth"},
+        {"name": "G14_P147", "text": "vector indoors chalk eclipsed by wealth"},
+        {"name": "G14_P148", "text": "adult symbol chair ahead of wealth"},
+        {"name": "G14_P149", "text": "people retro chair eclipsed by money"},
+        {"name": "G14_P150", "text": "business industry chair not far from finance"},
+        {"name": "G14_P151", "text": "symbol outdoors vintage juxtaposed with finance"},
+        {"name": "G14_P152", "text": "ancient symbol chair facing money"},
+        {"name": "G14_P153", "text": "business symbol antique next to wealth"},
+        {"name": "G15_P155", "text": "porcelain print bent over planet"},
+        {"name": "G15_P156", "text": "craft illustration eclipsed by decoration"},
+        {"name": "G15_P157", "text": "retro sign above pattern"},
+        {"name": "G15_P158", "text": "tableware print not far from decoration"},
+        {"name": "G15_P159", "text": "retro paper eclipsed by tourism"},
+        {"name": "G15_P160", "text": "round symbol bent over spherical"},
+        {"name": "G15_P161", "text": "handmade round ahead of geography"},
+        {"name": "G15_P162", "text": "design round juxtaposed with pottery"},
+        {"name": "G15_P163", "text": "craft image next to tourism"},
+        {"name": "G15_P164", "text": "flower round behind pottery"},
+        {"name": "G16_P166", "text": "wood facing travel"},
+        {"name": "G16_P167", "text": "handmade next to pattern"},
+        {"name": "G16_P168", "text": "handmade next to architecture"},
+        {"name": "G16_P169", "text": "craft not far from closeup"},
+        {"name": "G16_P170", "text": "wood not far from sculpture"},
+        {"name": "G16_P171", "text": "no above culture"},
+        {"name": "G16_P172", "text": "vintage facing pattern"},
+        {"name": "G16_P173", "text": "wood ahead of travel"},
+        {"name": "G16_P174", "text": "decoration facing culture"},
+        {"name": "G16_P175", "text": "antique not far from travel"},
+        {"name": "G17_P177", "text": "retro design juxtaposed with architecture"},
+        {"name": "G17_P178", "text": "antique wood behind traditional"},
+        {"name": "G17_P179", "text": "pottery closeup juxtaposed with texture"},
+        {"name": "G17_P180", "text": "people food above wooden"},
+        {"name": "G17_P181", "text": "copper isolated below religion"},
+        {"name": "G17_P182", "text": "money wood bent over text"},
+        {"name": "G17_P183", "text": "no dirty facing texture"},
+        {"name": "G17_P184", "text": "commerce design below ornate"},
+        {"name": "G17_P185", "text": "ancient horizontal behind traditional"},
+        {"name": "G17_P186", "text": "money sign facing architecture"},
+        {"name": "G18_P188", "text": "one juxtaposed with still"},
+        {"name": "G18_P189", "text": "metalwork below container"},
+        {"name": "G18_P190", "text": "old next to vintage"},
+        {"name": "G18_P191", "text": "design surrounded by ancient"},
+        {"name": "G18_P192", "text": "jewelry surrounded by wealth"},
+        {"name": "G18_P193", "text": "one behind ancient"},
+        {"name": "G18_P194", "text": "light above wealth"},
+        {"name": "G18_P195", "text": "luxury juxtaposed with wealth"},
+        {"name": "G18_P196", "text": "one eclipsed by religion"},
+        {"name": "G18_P197", "text": "art not far from religion"},
+        {"name": "G19_P199", "text": "disjunct travel business facing image"},
+        {"name": "G19_P200", "text": "design water city below architecture"},
+        {"name": "G19_P201", "text": "symbol gold ball-shaped behind round"},
+        {"name": "G19_P202", "text": "pottery vertical trip facing gold"},
+        {"name": "G19_P203", "text": "illustration travel outdoors leaning on picture"},
+        {"name": "G19_P204", "text": "pottery business illustration bent over image"},
+        {"name": "G19_P205", "text": "pottery business sea not far from architecture"},
+        {"name": "G19_P206", "text": "old outdoors ball-shaped surrounded by gold"},
+        {"name": "G19_P207", "text": "old symbol trip facing decoration"},
+        {"name": "G19_P208", "text": "ceramic wealth city juxtaposed with round"},
+        {"name": "G20_P210", "text": "image not far from spherical"},
+        {"name": "G20_P211", "text": "disjunct ahead of spherical"},
+        {"name": "G20_P212", "text": "oval next to text"},
+        {"name": "G20_P213", "text": "desktop in front of antique"},
+        {"name": "G20_P214", "text": "decoration eclipsed by painting"},
+        {"name": "G20_P215", "text": "illustration below pattern"},
+        {"name": "G20_P216", "text": "symbol below print"},
+        {"name": "G20_P217", "text": "trophy not far from pattern"},
+        {"name": "G20_P218", "text": "round in front of no"},
+        {"name": "G20_P219", "text": "decoration bent over travel"},
+        {"name": "G21_P221", "text": "jewelry juxtaposed with vacation"},
+        {"name": "G21_P222", "text": "ornate behind symbol"},
+        {"name": "G21_P223", "text": "art ahead of sea"},
+        {"name": "G21_P224", "text": "no next to landscape"},
+        {"name": "G21_P225", "text": "clock eclipsed by outdoors"},
+        {"name": "G21_P226", "text": "luxury eclipsed by symbol"},
+        {"name": "G21_P227", "text": "ornate above people"},
+        {"name": "G21_P228", "text": "decoration bent over vehicle"},
+        {"name": "G21_P229", "text": "round below vehicle"},
+        {"name": "G21_P230", "text": "time juxtaposed with city"},
+        {"name": "G22_P231", "text": "flatware above spherical"},
+        {"name": "G22_P232", "text": "ornate below watercraft"},
+        {"name": "G22_P233", "text": "desktop surrounded by spherical"},
+        {"name": "G22_P234", "text": "art surrounded by travel"},
+        {"name": "G22_P235", "text": "no facing watercraft"},
+        {"name": "G22_P236", "text": "antique surrounded by symbol"},
+        {"name": "G22_P237", "text": "illustration eclipsed by symbol"},
+        {"name": "G22_P238", "text": "no ahead of watercraft"},
+        {"name": "G22_P239", "text": "desktop in front of map"},
+        {"name": "G22_P240", "text": "porcelain bent over ball-shaped"},
+        {"name": "G23_P241", "text": "internet next to universe"},
+        {"name": "G23_P242", "text": "symbol in front of no"},
+        {"name": "G23_P243", "text": "no next to no"},
+        {"name": "G23_P244", "text": "ball-shaped behind ball"},
+        {"name": "G23_P245", "text": "business eclipsed by connection"},
+        {"name": "G23_P246", "text": "bright above connection"},
+        {"name": "G23_P247", "text": "retro behind connection"},
+        {"name": "G23_P248", "text": "illustration below planet"},
+        {"name": "G23_P249", "text": "ball-shaped above connection"},
+        {"name": "G23_P250", "text": "people ahead of planet"},
+        {"name": "G24_P251", "text": "decoration not far from vertical"},
+        {"name": "G24_P252", "text": "plate behind sea"},
+        {"name": "G24_P253", "text": "drink ahead of currency"},
+        {"name": "G24_P254", "text": "symbol facing design"},
+        {"name": "G24_P255", "text": "pottery juxtaposed with wealth"},
+        {"name": "G24_P256", "text": "symbol eclipsed by no"},
+        {"name": "G24_P257", "text": "old leaning on no"},
+        {"name": "G24_P258", "text": "drink surrounded by art"},
+        {"name": "G24_P259", "text": "food behind no"},
+        {"name": "G24_P260", "text": "no bent over sea"},
+        {"name": "G25_P261", "text": "food paper next to text"},
+        {"name": "G25_P262", "text": "tableware spherical in front of painting"},
+        {"name": "G25_P263", "text": "art vintage juxtaposed with text"},
+        {"name": "G25_P264", "text": "container post below text"},
+        {"name": "G25_P265", "text": "porcelain patriotism behind shape"},
+        {"name": "G25_P266", "text": "kitchenware map surrounded by painting"},
+        {"name": "G25_P267", "text": "pottery flag ahead of text"},
+        {"name": "G25_P268", "text": "one old in front of pattern"},
+        {"name": "G25_P269", "text": "art antique eclipsed by text"},
+        {"name": "G25_P270", "text": "ceramic flag behind margin"},
+        {"name": "G26_P271", "text": "symbol surrounded by technology"},
+        {"name": "G26_P272", "text": "round above illustration"},
+        {"name": "G26_P273", "text": "symbol above technology"},
+        {"name": "G26_P274", "text": "security bent over dirty"},
+        {"name": "G26_P275", "text": "sign above technology"},
+        {"name": "G26_P276", "text": "glazed below geography"},
+        {"name": "G26_P277", "text": "round above universe"},
+        {"name": "G26_P278", "text": "finance surrounded by desktop"},
+        {"name": "G26_P278", "text": "travel juxtaposed with planet"},
+        {"name": "G26_P279", "text": "glazed ahead of space"},
+
+      ];
+
+      plates = shuffle(plates);
+
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          plates: plates,
+          current: 0,
+          rotation: {x: 0, y: Math.PI, z: 0},
+          speed: 0.002,
+          userControl: false,
+          loaded: false,
+          plateSource: 'generated_plates/' + plates[0].name + '.gltf',
+          text: plates[0].text,
+          opacity: 1,
+        },
+
+        created: function() {
+          // setInterval(() => {
+          // }, 2000);
+        },
+
+        methods: {
+          increment: function() {
+            var current = this.current;
+            current += 1;
+            if (current > this.plates.length - 1) {
+              current = 0;
+            }
+            this.current = current;
+            this.text = this.plates[current].text
+            this.plateSource = 'generated_plates/' + this.plates[current].name + '.gltf';
+            this.rotation = {x: 0, y: 3.14, z: 0};
+            this.opacity = 1;
+          },
+
+          onLoad: function() {
+            window.cancelAnimationFrame(this.animationFrame);
+            this.rotate();
+            this.userControl = false;
+          },
+
+          toggleControl: function() {
+            this.userControl = true;
+          },
+
+          rotate: function () {
+            this.rotation.y += this.speed;
+            if (this.rotation.y > Math.PI * 2) {
+              this.opacity -= .01;
+            }
+            if (this.opacity <= 0) {
+              this.increment();
+            }
+            this.animationFrame = requestAnimationFrame(this.rotate);
+          }
+        },
+      })
+
+
+    </script>
+  </body>
+</html>
+
