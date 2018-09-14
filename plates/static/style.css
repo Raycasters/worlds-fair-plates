@@ -37,7 +37,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 25px;
+  /* padding: 25px; */
   height: auto;
 }
 
@@ -58,6 +58,7 @@ nav {
 
 .nav-icons {
   margin-left: auto;
+  padding-right: 25px;
 }
 
 nav .icon {
@@ -105,6 +106,7 @@ nav .icon.router-link-active span {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  padding: 25px;
 }
 
 #logo img {
@@ -305,7 +307,7 @@ nav .icon.router-link-active span {
 
 #map-container {
   position: absolute;
-  top: 100px;
+  top: 86px;
   bottom: 0;
   width: 100%;
   z-index: 0;
@@ -315,7 +317,7 @@ nav .icon.router-link-active span {
   z-index: 1;
   position: absolute;
   left: 0;
-  top: 100px;
+  top: 86px;
   bottom: 0;
   width: 110px;
   /* overflow-y: scroll; */
@@ -568,4 +570,9 @@ nav .icon.router-link-active span {
   .plate-detail-header-content {
     flex-direction: column;
   }
+
+  #map-plate-holder, #map-container {
+    top: 100px;
+  }
+
 }

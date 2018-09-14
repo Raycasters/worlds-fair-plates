@@ -31,7 +31,7 @@
           <router-link class="about-link" to="/info" :style="{textDecoration: $route.path=='/info' ? 'underline' : 'none'}">about</router-link>
           <a class="submit-link" style="margin: 0 20px;" href="https://goo.gl/forms/o5QySj1c28RiPDH02" target="blank">submit your plate</a>
         </span>
-        <div class="nav-icons" :style="{opacity: $route.path == '/' ? 0 : 1}">
+        <div class="nav-icons" :style="{display: $route.path == '/' || $route.path == '/info' ? 'none' : 'block'}">
           <router-link class="icon" to="/plates"><img src="/static/list.png"><span>Grid</span></router-link>
           <router-link class="icon" to="/map"><img src="/static/map.png"><span>Map</span></router-link>
         </div>
