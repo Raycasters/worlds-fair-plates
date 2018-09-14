@@ -21,17 +21,17 @@
   <div id="app">
     <nav>
       <div class="nav-item" style="justify-content:left">
-        <span>
-          <router-link to="/info" :style="{textDecoration: $route.path=='/info' ? 'underline' : 'none'}">INFO</router-link>
-          <a style="margin-left: 20px;" href="https://goo.gl/forms/o5QySj1c28RiPDH02" target="blank">submit your own</a>
-        </span>
+        <router-link to="/plates" id="logo"><span>Plates of the World</span><img src="/static/logo-mobile.png"></router-link>
       </div>
       <div class="nav-item">
-        <router-link to="/plates" id="logo">Plates of the World</router-link>
       </div>
 
       <div class="nav-item">
-        <div class="nav-icons" :style="{opacity: $route.path == '/' || $route.path == '/info' ? 0 : 1}">
+        <span>
+          <router-link class="about-link" to="/info" :style="{textDecoration: $route.path=='/info' ? 'underline' : 'none'}">about</router-link>
+          <a class="submit-link" style="margin: 0 20px;" href="https://goo.gl/forms/o5QySj1c28RiPDH02" target="blank">submit your plate</a>
+        </span>
+        <div class="nav-icons" :style="{opacity: $route.path == '/' ? 0 : 1}">
           <router-link class="icon" to="/plates"><img src="/static/list.png"><span>Grid</span></router-link>
           <router-link class="icon" to="/map"><img src="/static/map.png"><span>Map</span></router-link>
         </div>
@@ -112,7 +112,9 @@
 
   <script type="text/template" id="plate-page">
     <div class="plate-detail">
-      <div class="plate-pagination">
+      <div class="plate-detail-paginate-mobile">
+        <router-link :to="{ name: 'plate-page', params: { id: prevPlate }}"><img src="/static/left.png"></router-link>
+        <router-link :to="{ name: 'plate-page', params: { id: nextPlate }}"><img src="/static/right.png"></router-link>
       </div>
       <div class="plate-detail-header">
         <div class="plate-detail-paginate">
@@ -187,7 +189,7 @@
   </script>
 
   <script type="text/template" id="info">
-    <div class="info-screen">
+    <div class="info-screen" style="padding: 20px;">
       <p>The 1939 and 1964 World’s Fair exhibitions transformed what was considered to be a “valley of ashes” in Queens, NY into a dream world, giving the millions of people that attended the fairs a glimpse of a possible future utopia. Mementos of the fair flooded U.S. and world markets, since almost every visitor to the fair brought back some form of souvenir.</p>
 
       <p>Unlike many museum collections, these artifacts do not have the aura of a singular, precious artifact, following the simple reason that the Queens Museum has collected and displayed one copy, while the rest of the collection is scattered around the globe. In order to get a sense of the event, perhaps we need to expand the classic museum display and find new ways to curate and connect the items.</p>
@@ -195,7 +197,7 @@
       <p>To tell the story of this collection, we used Machine Learning algorithms to scrape the internet and present a dynamic exploration of the collection. Through this project, we want to ask: can the museum track the presence, impact and the community around these artifacts worldwide and in the digital sphere? And how do such actions challenge the audience-collector relationship?</p>
       
         <p style="text-align:center;margin-top:30px;">
-          <a href="https://medium.com/@hello_69515/the-plates-of-the-world-reinterpreting-a-collection-of-mass-produced-memorabilia-26cf577b7d2a"><img style="max-width: 400px" src="/static/case_study.png"></a>
+          <a href="https://medium.com/@hello_69515/the-plates-of-the-world-reinterpreting-a-collection-of-mass-produced-memorabilia-26cf577b7d2a"><img style="width: 100%; max-width: 400px" src="/static/case_study.png"></a>
         </p>
 
       <div style="text-align: center">
@@ -209,10 +211,10 @@
 
         <br>
         <p>Supported by</p>
-        <div style="display:flex;align-items: center; justify-content: center; flex-direction:row;">
-          <img style="height: 50px; margin:10px;" src="/static/knight.png">
-          <img style="height: 50px; margin:10px;" src="/static/newinc.png">
-          <img style="height: 50px; margin:10px;" src="/static/queens.png">
+        <div style="">
+          <img style="display: inline-block; max-width: 100%; max-height: 50px; margin:10px;" src="/static/knight.png">
+          <img style="display: inline-block; max-width: 100%; max-height: 50px; margin:10px;" src="/static/newinc.png">
+          <img style="display: inline-block; max-width: 100%; max-height: 50px; margin:10px;" src="/static/queens.png">
         </div>
 
 
