@@ -513,6 +513,11 @@ const Info = {
   delimiters: ['${', '}']
 };
 
+const PageNotFound = {
+  template: '#page-not-found',
+  delimiters: ['${', '}']
+};
+
 const routes = [
   {
     path: '/',
@@ -547,7 +552,8 @@ const routes = [
     path: '/listing/:id',
     name: 'listing',
     component: Listing
-  }
+  },
+  { path: "*", component: PageNotFound }
 ];
 
 const router = new VueRouter({
