@@ -22,7 +22,7 @@
     <nav>
       <div class="nav-item" style="justify-content:left">
         <span>
-          <router-link to="/info">INFO</router-link>
+          <router-link to="/info" :style="{textDecoration: $route.path=='/info' ? 'underline' : 'none'}">INFO</router-link>
           <a style="margin-left: 20px;" href="https://goo.gl/forms/o5QySj1c28RiPDH02" target="blank">submit your own</a>
         </span>
       </div>
@@ -31,7 +31,7 @@
       </div>
 
       <div class="nav-item">
-        <div class="nav-icons" :style="{opacity: $route.path == '/' ? 0 : 1}">
+        <div class="nav-icons" :style="{opacity: $route.path == '/' || $route.path == '/info' ? 0 : 1}">
           <router-link class="icon" to="/plates"><img src="/static/list.png"><span>Grid</span></router-link>
           <router-link class="icon" to="/map"><img src="/static/map.png"><span>Map</span></router-link>
         </div>
@@ -42,20 +42,22 @@
 
   <script type="text/template" id="welcome">
     <div class="welcome">
+      <div class="model-holder">
         <model-gltf
-          :width="400"
-          :height="400"
           @on-load="onLoad"
           @on-mousedown="toggleControl"
           :rotation="rotation"
           :lights="[{ type: 'AmbientLight', color: 0xaaaaaa, intensity: 1.9 }, ]"
           src="/static/plates/21_pink_rim_64.gltf"
         ></model-gltf>
-      <p>This site is dedicated to the collectible plates produced to commemorate the 1939 and 1964 NY World's Fairs.</p>
-      <p>Where are these plates today?</p>
-      <p>
-        <router-link class="explore" to="/plates">Explore the collection</router-link>
-      </p>
+      </div>
+      <div>
+        <p>This site is dedicated to the collectible plates produced to commemorate the 1939 and 1964 NY World's Fairs.</p>
+        <p>Where are these plates today?</p>
+        <p>
+          <router-link class="explore" to="/plates">Explore the collection</router-link>
+        </p>
+      </div>
     </div>
   </script>
 
@@ -186,19 +188,21 @@
 
   <script type="text/template" id="info">
     <div class="info-screen">
-      <p>The World’s Fairs brought the entire world to the viewer in one physical place. The internet does a similar thing today and has shaped the ways in which we collect, share and remember. The World’s Fair collectibles are items commissioned by large corporations such as U.S Steel and produced in massive quantities. The collectible items displayed in the museum do not have the aura of a singular artifact. Scattered around the world, thousands of these items are even available for sale online. In most cases, the museum collects and displays one copy, while and other instances of items in these collection are scattered around the globe. </p>
+      <p>The 1939 and 1964 World’s Fair exhibitions transformed what was considered to be a “valley of ashes” in Queens, NY into a dream world, giving the millions of people that attended the fairs a glimpse of a possible future utopia. Mementos of the fair flooded U.S. and world markets, since almost every visitor to the fair brought back some form of souvenir.</p>
 
-      <p>To tell the story of this collection, we used Machine Learning algorithms to scrape the internet and present a dynamic exploration of the collection. A living image of the collectibles and the people that engage with them. </p>
+      <p>Unlike many museum collections, these artifacts do not have the aura of a singular, precious artifact, following the simple reason that the Queens Museum has collected and displayed one copy, while the rest of the collection is scattered around the globe. In order to get a sense of the event, perhaps we need to expand the classic museum display and find new ways to curate and connect the items.</p>
 
-      <p>Through this project, we want to ask: can a museum use algorithms to expand its reach and present a more comprehensive view of a collection? Could the museum also track the presence, impact and the community around these artifacts worldwide and in the digital sphere? How do such actions challenge the audience-collector relationship?</p>
-
-      <p>Can 3D documentation of the collection assist in the identification of artifacts?</p>
-      <br>
+      <p>To tell the story of this collection, we used Machine Learning algorithms to scrape the internet and present a dynamic exploration of the collection. Through this project, we want to ask: can the museum track the presence, impact and the community around these artifacts worldwide and in the digital sphere? And how do such actions challenge the audience-collector relationship?</p>
+      
+        <p style="text-align:center;margin-top:30px;">
+          <a href="https://medium.com/@hello_69515/the-plates-of-the-world-reinterpreting-a-collection-of-mass-produced-memorabilia-26cf577b7d2a"><img style="max-width: 400px" src="/static/case_study.png"></a>
+        </p>
 
       <div style="text-align: center">
         <p>Made by</p>
 
         <p><img style="width:200px" src="/static/raycaster.png"></p>
+        <p>~shirin anlen and Ziv Schneider</p>
 
         <p>Developer: Sam Lavigne</p>
         <p>3D asset processing and modeling: Regina Sophia Cantu de Alba</p>
@@ -213,6 +217,16 @@
 
 
       </div>
+    </div>
+  </script>
+
+  <script type="text/template" id="page-not-found">
+
+    <div style="text-align:center;margin-top: 40px; max-width: 800px; margin: auto;">
+      <img src="static/404.png" style="width: 100%;display:block;">
+      <p style="margin: 20px;">sorry, the page you requested was not found</p>
+
+      <p style="font-weight:bold"><a href="/">BACK HOME</a></p>
     </div>
   </script>
 
