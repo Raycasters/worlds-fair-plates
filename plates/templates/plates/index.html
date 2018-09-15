@@ -42,8 +42,10 @@
 
   <script type="text/template" id="welcome">
     <div class="welcome">
-      <div class="model-holder">
-        <model-gltf
+      <div class="model-holder" ref="modelHolder">
+        <model-gltf v-if="ready"
+          :width="w"
+          :height="h"
           @on-load="onLoad"
           @on-mousedown="toggleControl"
           :rotation="rotation"

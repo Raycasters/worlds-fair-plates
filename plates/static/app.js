@@ -487,7 +487,21 @@ const Welcome = {
       rotation: {x: 0, y: 0, z: 0},
       speed: 0.0015,
       userControl: false,
+      ready: false,
+      w: 0,
+      h: 0,
     }
+  },
+  computed: {
+  },
+  mounted: function() {
+    let w = this.$refs.modelHolder.offsetWidth;
+    let h = this.$refs.modelHolder.offsetHeight;
+    this.$nextTick( () => {
+      this.w = w;
+      this.h = h;
+      this.ready = true;
+    } )
   },
   methods: {
     onLoad: function() {
