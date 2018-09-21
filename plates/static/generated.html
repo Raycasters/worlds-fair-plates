@@ -3,69 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <title>title</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
-    <style>
-      html {
-        width: 100%;
-        height: 100%;
-      }
+      <script>
 
-      body {
-        text-align: center;
-        font: 16px Montserrat;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        text-transform: uppercase;
-      }
-
-      #app {
-        width: 100%;
-        height: 100%;
-      }
-
-      #holder {
-        /* display: flex; */
-        /* flex-direction: column; */
-      }
-    </style>
-  </head>
-
-  <body>
-    <div id="app">
-      <div id="holder" :style="{opacity: opacity}">
-         <model-gltf
-           :height="h"
-           :width="w"
-           @on-load="onLoad"
-           @on-mousedown="toggleControl"
-           :rotation="rotation"
-           :src="plateSource"
-           :controllable="false"
-        ></model-gltf>
-        <p>{{ text }}</p>
-      </div>
-    </div>
-
-
-    <script src="/static/vue.js"></script>
-    <script src="/static/vue-3d-model.js"></script>
-
-    <script>
-      function shuffle(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
-        while (0 !== currentIndex) {
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-          temporaryValue = array[currentIndex];
-          array[currentIndex] = array[randomIndex];
-          array[randomIndex] = temporaryValue;
-        }
-        return array;
-      }
-
-      var plates = [
+      plates = [
         {"name": "G01_P01", "text": "sign color vehicle juxtaposed with achievement"},
         {"name": "G01_P02", "text": "people color creativity leaning on investment"},
         {"name": "G01_P03", "text": "image health food bent over business"},
@@ -329,69 +269,204 @@
 
       ];
 
-      plates = shuffle(plates);
 
+
+      </script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <style>
+      html {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        text-align: center;
+        font: 16px Montserrat;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        text-transform: uppercase;
+      }
+
+      #app {
+        width: 100%;
+        height: 100%;
+      }
+
+      .holder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      .plate {
+        position: absolute;
+      }
+      .next {
+        z-index: 2;
+      }
+      .prev {
+        z-index: 1;
+      }
+      .fade-enter-active, .fade-leave-active {
+        transition: all 3.8s ease;
+        overflow: hidden;
+        visibility: visible;
+        opacity: 1;
+        position: absolute;
+      }
+      .fade-enter, .fade-leave-to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+        <div class="plate" :style="{opacity: source1Opacity, zIndex: source1Z}">
+          <model-gltf
+             :height="h"
+             :width="w"
+             @on-load="onLoad"
+             :rotation="rotation"
+             :src="source1"
+             :controllable="false"
+          ></model-gltf>
+          <p>{{ text1 }}</p>
+        </div>
+        <div class="plate" :style="{opacity: source2Opacity, zIndex: source2Z}">
+          <model-gltf
+             :height="h"
+             :width="w"
+             @on-load="onLoad"
+             :rotation="rotation"
+             :src="source2"
+             :controllable="false"
+          ></model-gltf>
+          <p>{{ text2 }}</p>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="/static/vue-3d-model.js"></script>
+
+    <script>
+      function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+        return array;
+      }
+
+      plates = shuffle(plates);
 
       var app = new Vue({
         el: '#app',
         data: {
           plates: plates,
-          current: 0,
+          currentNumber: 0,
+          nextNumber: 1,
+          source1: 'generated_plates/' + plates[0].name + '.gltf',
+          source2: 'generated_plates/' + plates[1].name + '.gltf',
+          text1: plates[0].text,
+          text2: plates[1].text,
+          source1Opacity: 1,
+          source2Opacity: 0,
+          source1Z: 1,
+          source2Z: 2,
           rotation: {x: 0, y: Math.PI * 2.5, z: 0},
           speed: 0.0025,
-          userControl: false,
-          loaded: false,
-          plateSource: 'generated_plates/' + plates[0].name + '.gltf',
-          text: plates[0].text,
-          opacity: 1,
           h: window.innerHeight - 80,
-          w: window.innerWidth
+          w: window.innerWidth,
+          timer: null,
+          items: [
+            {source: 'generated_plates/' + plates[0].name + '.gltf', text: plates[0].text, zIndex: 0, opacity: 1},
+            {source: 'generated_plates/' + plates[1].name + '.gltf', text: plates[1].text, zIndex: 1, opacity: 0},
+          ],
+          nextUp: 1,
+          fadeSpeed: 0.004,
+          lastFade: 0,
         },
 
         created: function() {
+          this.rotate();
+          //this.timer = setInterval(() => {
+          //  this.fadeIn();
+          //}, 30000)
           // setInterval(() => {
           // }, 2000);
         },
 
         methods: {
-          increment: function() {
-            window.cancelAnimationFrame(this.animationFrame);
-            var current = this.current;
-            current += 1;
-            if (current > this.plates.length - 1) {
-              current = 0;
-            }
-            this.current = current;
-            this.text = this.plates[current].text
-            this.plateSource = 'generated_plates/' + this.plates[current].name + '.gltf';
-            // this.rotation = {x: 0, y: 3.14, z: 0};
-            this.rotation = {x: 0, y: Math.PI * 2.5, z: 0};
-            // this.opacity = 1;
-          },
-
           onLoad: function() {
-            window.cancelAnimationFrame(this.animationFrame);
-            this.rotate();
-            this.userControl = false;
-          },
-
-          toggleControl: function() {
-            this.userControl = true;
           },
 
           rotate: function () {
             this.rotation.y += this.speed;
-            if (this.rotation.y > Math.PI * 4.33) {
-              this.opacity -= 0.01;
-            } else {
-              if (this.opacity < 1) {
-                this.opacity += 0.01;
-              }
-            }
-            if (this.opacity <= 0) {
-              this.increment();
+            if (this.rotation.y - this.lastFade >= Math.PI*2) {
+              this.fadeIn();
+              this.lastFade = this.rotation.y;
             }
             this.animationFrame = requestAnimationFrame(this.rotate);
+          },
+
+          fadeIn: function() {
+            if (this.nextUp == 2) {
+              this.source2Opacity += this.fadeSpeed;
+              this.source1Opacity -= this.fadeSpeed;
+              if (this.source2Opacity >= 1) {
+                this.increment();
+                cancelAnimationFrame(this.fadeFrame);
+              } else {
+                this.fadeFrame = requestAnimationFrame(this.fadeIn);
+              }
+            } else if (this.nextUp == 1) {
+              this.source1Opacity += this.fadeSpeed;
+              this.source2Opacity -= this.fadeSpeed;
+              if (this.source1Opacity >= 1) {
+                this.increment();
+                cancelAnimationFrame(this.fadeFrame);
+              } else {
+                this.fadeFrame = requestAnimationFrame(this.fadeIn);
+              }
+            }
+          },
+
+          increment: function() {
+            var current = this.currentNumber;
+            var next = this.nextNumber;
+            current ++;
+            next ++;
+            if (current > plates.length - 1) current = 0;
+            if (next > plates.length - 1) next = 0;
+            this.currentNumber = current;
+            this.nextNumber = next;
+
+            if (this.nextUp == 2) {
+              this.source1Opacity = 0;
+              this.source1Z = 1;
+              this.source2Z = 0;
+              this.source1 = 'generated_plates/' + plates[next].name + '.gltf',
+              this.text1 = plates[next].text;
+              this.nextUp = 1;
+            } else if (this.nextUp == 1) {
+              this.source2Opacity = 0;
+              this.source2Z = 1;
+              this.source1Z = 0;
+              this.source2 = 'generated_plates/' + plates[next].name + '.gltf',
+              this.text2 = plates[next].text;
+              this.nextUp = 2;
+            }
           }
         },
       })
